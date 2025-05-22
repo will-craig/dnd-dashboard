@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AmmoInput from './components/PlayerCard/AmmoInput';
 
 export default function App() {
   type Item = {
@@ -24,10 +25,20 @@ export default function App() {
   ];
 
   const conditionIcons: Record<string, string> = {
-    Blinded: '🙈', Charmed: '💘', Deafened: '🔇', Exhaustion: '😴',
-    Frightened: '😱', Grappled: '🤼', Incapacitated: '💤', Invisible: '👻',
-    Paralyzed: '🪦', Petrified: '🗿', Poisoned: '☠️', Prone: '🛌',
-    Restrained: '🪢', Stunned: '💫', Unconscious: '🧠'
+    Blinded: '🙈', 
+    Charmed: '💘', 
+    Deafened: '🦻', 
+    Frightened: '😱', 
+    Grappled: '🤼', 
+    Incapacitated: '💤', 
+    Invisible: '👻',
+    Paralyzed: '♿', 
+    Petrified: '🗿', 
+    Poisoned: '☠️',
+    Prone: '🛌',
+    Restrained: '🪢', 
+    Stunned: '💫', 
+    Unconscious: '😴'
   };
 
 
@@ -35,8 +46,8 @@ export default function App() {
     {
       id: 1,
       name: 'Aragorn',
-      hp: 38,
-      maxHp: 50,
+      hp: 50,
+      maxHp: 40,
       status: ['Poisoned'],
       items: [
         { name: 'Healing Potion' },
@@ -48,8 +59,8 @@ export default function App() {
     {
       id: 2,
       name: 'Legolas',
-      hp: 42,
-      maxHp: 60,
+      hp: 40,
+      maxHp: 40,
       status: [],
       items: [
         { name: 'Elven Cloak' },
@@ -272,49 +283,40 @@ export default function App() {
                <p className="mb-1">🎒 Items (✨ {magicItemCount} magic):</p>
               <ul className="ml-4 list-disc">
                   {player.items.map((item, idx) => (
-    <li
-      key={idx}
-      className={`flex justify-between items-center ${
-        item.magic ? 'text-indigo-400 font-semibold' : ''
-      }`}
-    >
-      <span>{item.name}</span>
-      <button
-        onClick={() => removeEntry(player.id, 'item', idx)}
-        className="text-xs text-red-400 ml-2"
-      >
-        ✖
-      </button>
-    </li>
-  ))}
-</ul>
+                <li
+                  key={idx}
+                  className={`flex justify-between items-center ${
+                    item.magic ? 'text-indigo-400 font-semibold' : ''
+                  }`}
+                >
+                  <span>{item.name}</span>
+                  <button
+                    onClick={() => removeEntry(player.id, 'item', idx)}
+                    className="text-xs text-red-400 ml-2"
+                  > ✖
+                  </button>
+                </li>
+              ))}
+              </ul>
 
-<p className="mt-2">🔑 Keys:</p>
-<ul className="ml-4 list-disc">
-  {player.keys.map((key, idx) => (
-    <li key={idx} className="flex justify-between items-center">
-      <span>{key}</span>
-      <button
-        onClick={() => removeEntry(player.id, 'key', idx)}
-        className="text-xs text-red-400 ml-2"
-      >
-        ✖
-      </button>
-    </li>
-  ))}
-</ul>
-                <div className="mt-2">
-                  <label className="mr-2">🏹 Ammo:</label>
-                  <input
-                    type="number"
-                    value={player.ammo}
-                    onChange={(e) => updatePlayerField(player.id, 'ammo', Number(e.target.value))}
-                    className="bg-zinc-700 p-1 rounded w-20 text-center"
-                  />
-                </div>
+                <p className="mt-2">🔑 Keys:</p>
+                <ul className="ml-4 list-disc">
+                  {player.keys.map((key, idx) => (
+                    <li key={idx} className="flex justify-between items-center">
+                      <span>{key}</span>
+                      <button
+                        onClick={() => removeEntry(player.id, 'key', idx)}
+                        className="text-xs text-red-400 ml-2"
+                      >✖</button>
+                    </li>
+                  ))}
+                </ul>
+                
+               <AmmoInput ammo={player.ammo} onChange={(value) => updatePlayerField(player.id, 'ammo', value)}/>
+
               </div>
 
-             
+          
 
               {statusPickerVisible === player.id && (
                 <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
