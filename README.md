@@ -1,54 +1,38 @@
-# React + TypeScript + Vite
+# 🛡️ D&D Player Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight, interactive web app for managing Dungeons & Dragons player states. It allows DMs and players to view and update HP, AC, conditions, inventory, and other key stats in real-time. Built using modern React tooling with a clean component architecture.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔧 Technologies
 
-## Expanding the ESLint configuration
+- **React + TypeScript** — component-based UI structure with type safety
+- **Vite** — fast dev server and bundler
+- **TailwindCSS** — utility-first styling
+- **Modular Components** — broken into logical units like PlayerCard, InventoryManager, StatusManager, etc.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 📦 Features
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Editable player name
+- HP & Max HP inputs with damage/threat visual cues (pulse/red border)
+- AC (Armor Class) input with shield icon
+- Uploadable player portrait (optional)
+- Status conditions manager with emoji indicators
+- Inventory manager with:
+  - Normal items
+  - Magic items (highlighted)
+  - Ammo with editable count
+  - Keys (separately listed)
+- Gold (currency) tracker
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+
+
+## 🚧 Planned Features
+
+- Real-time updates using SignalR or Firebase
+- Undo recent changes
+- Spell slot tracker
+- Responsive/mobile optimization
+- Settings panel for themes or light/dark mode
