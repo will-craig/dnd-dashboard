@@ -26,9 +26,6 @@ A lightweight, interactive web app for managing Dungeons & Dragons player states
   - Keys (separately listed)
 - Gold (currency) tracker
 
-
-
-
 ## 🚧 Planned Features
 
 - Real-time updates using SignalR or Firebase
@@ -36,3 +33,7 @@ A lightweight, interactive web app for managing Dungeons & Dragons player states
 - Spell slot tracker
 - Responsive/mobile optimization
 - Settings panel for themes or light/dark mode
+
+TODO:
+- Finish granulating components 
+- Implement Redux for state management before introducing signal r

@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const conditionIcons: Record<string, string> = {
-Blinded: '🙈', 
-Charmed: '💘', 
-Deafened: '🦻', 
-Frightened: '😱', 
-Grappled: '🤼', 
-Incapacitated: '💤', 
-Invisible: '👻',
-Paralyzed: '♿', 
-Petrified: '🗿', 
-Poisoned: '☠️',
-Prone: '🛌',
-Restrained: '🪢', 
-Stunned: '💫', 
-Unconscious: '😴'
+  Blinded: '🙈',
+  Charmed: '💘',
+  Deafened: '🦻',
+  Frightened: '😱',
+  Grappled: '🤼',
+  Incapacitated: '💤',
+  Invisible: '👻',
+  Paralyzed: '♿',
+  Petrified: '🗿',
+  Poisoned: '☠️',
+  Prone: '🛌',
+  Restrained: '🪢',
+  Stunned: '💫',
+  Unconscious: '😴'
 };
 
 const allConditions = Object.keys(conditionIcons);
@@ -22,17 +22,14 @@ const allConditions = Object.keys(conditionIcons);
 type StatusManagerProps = {
   conditions: string[];
   onToggle: (condition: string) => void;
-  showPicker: boolean;
-  onTogglePicker: () => void;
 };
-
 
 const StatusManager: React.FC<StatusManagerProps> = ({
   conditions,
-  onToggle,
-  showPicker,
-  onTogglePicker,
+  onToggle
 }) => {
+  const [showPicker, setShowPicker] = useState(false);
+
   return (
     <div className="mt-2">
       <div className="flex flex-wrap gap-2">
@@ -41,7 +38,7 @@ const StatusManager: React.FC<StatusManagerProps> = ({
             key={condition}
             className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-zinc-700 text-zinc-300"
           >
-            <span>{conditionIcons[condition] || '❓'}</span>
+            <span>{conditionIcons[condition]}</span>
             <span>{condition}</span>
           </div>
         ))}
@@ -64,7 +61,11 @@ const StatusManager: React.FC<StatusManagerProps> = ({
           ))}
         </div>
       )}
-      <button onClick={onTogglePicker} className="mt-2 text-xs text-blue-400 underline">
+
+      <button
+        onClick={() => setShowPicker(!showPicker)}
+        className="mt-2 text-xs text-blue-400 underline"
+      >
         {showPicker ? 'Hide conditions' : 'Edit conditions'}
       </button>
     </div>
