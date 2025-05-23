@@ -1,18 +1,17 @@
-// AmmoInput.tsx
 import React from 'react';
 
-type AmmoInputProps = {
-  ammo: number;
+type CurrencyProps = {
+  gold: number;
   onChange: (value: number) => void;
 };
 
-const AmmoInput: React.FC<AmmoInputProps> = ({ ammo, onChange }) => {
+const Currency: React.FC<CurrencyProps> = ({ gold, onChange }) => {
   return (
     <div className="mt-2">
-      <label className="mr-2">🏹 Ammo:</label>
+      <label className="mr-2">💰</label>
       <input
         type="number"
-        value={ammo}
+        value={gold}
         onChange={(e) => onChange(Number(e.target.value))}
         className="bg-zinc-700 p-1 rounded w-20 text-center"
       />
@@ -20,4 +19,4 @@ const AmmoInput: React.FC<AmmoInputProps> = ({ ammo, onChange }) => {
   );
 };
 
-export default AmmoInput;
+export default Currency;

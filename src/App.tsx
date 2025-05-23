@@ -1,129 +1,106 @@
 import { useState } from 'react';
-import AmmoInput from './components/PlayerCard/AmmoInput';
+import StatusManager from './components/PlayerCard/StatusManager';
+import InventoryManager, { type Item } from './components/PlayerCard/Inventory';
+import Currency from './components/PlayerCard/Currency';
 
 export default function App() {
-  type Item = {
+  
+type Player = {
+  id: number;
+  name: string;
+  hp: number;
+  ac: number;
+  gold: number;
+  maxHp: number;
+  status: string[];
+  items: {
     name: string;
     magic?: boolean;
-  };
-
-  type Player = {
-    id: number;
-    name: string;
-    hp: number;
-    maxHp: number;
-    status: string[];
-    items: Item[];
-    keys: string[];
-    ammo: number;
-  };
-
-  const allConditions = [
-    'Blinded', 'Charmed', 'Deafened', 'Exhaustion', 'Frightened', 'Grappled',
-    'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified', 'Poisoned',
-    'Prone', 'Restrained', 'Stunned', 'Unconscious'
-  ];
-
-  const conditionIcons: Record<string, string> = {
-    Blinded: '🙈', 
-    Charmed: '💘', 
-    Deafened: '🦻', 
-    Frightened: '😱', 
-    Grappled: '🤼', 
-    Incapacitated: '💤', 
-    Invisible: '👻',
-    Paralyzed: '♿', 
-    Petrified: '🗿', 
-    Poisoned: '☠️',
-    Prone: '🛌',
-    Restrained: '🪢', 
-    Stunned: '💫', 
-    Unconscious: '😴'
-  };
-
-
+    quantity?: number;
+    type?: 'item' | 'item-qty' | 'ammo' | 'key';
+  }[];
+  // other fields...
+}
   const [players, setPlayers] = useState<Player[]>([
     {
       id: 1,
       name: 'Aragorn',
       hp: 50,
+      ac: 15,
+      gold: 100,
       maxHp: 40,
       status: ['Poisoned'],
       items: [
-        { name: 'Healing Potion' },
-        { name: 'Andúril', magic: true },
+        { name: 'Healing Potion', type: 'item-qty', quantity: 2 },
+        { name: 'Andúril', magic: true, type: 'item' },
+        { name: 'Key of Gondor', type: 'key' },
       ],
-      keys: ['Key of Gondor'],
-      ammo: 0
     },
     {
       id: 2,
       name: 'Legolas',
+      ac: 14,
+      gold: 50,
       hp: 40,
       maxHp: 40,
       status: [],
       items: [
-        { name: 'Elven Cloak' },
-        { name: 'Bow of the Galadhrim', magic: true },
+        { name: 'Elven Cloak', type: 'item' },
+        { name: 'Bow of the Galadhrim', magic: true, type: 'item' },
+        { name: 'Quiver of Arrows', quantity: 20, type: 'ammo' },
       ],
-      keys: ['Forest Gate Key'],
-      ammo: 20
     },
     {
       id: 3,
       name: 'Gimli',
       hp: 31,
+      ac: 16,
+      gold: 20,
       maxHp: 45,
       status: ['Stunned', 'Slowed'],
       items: [
-        { name: 'Battle Axe' },
-        { name: 'Belt of Dwarvenkind', magic: true },
-      ],
-      keys: ['Mine Key', 'Prison Cell Key'],
-      ammo: 0
-    },
+        { name: 'Battle Axe', type: 'item' },
+        { name: 'Mine Key', type: 'key' },
+        { name: 'Prison Cell Key', type: 'key' },
+      ]}
   ]);
 
   const [newPlayerName, setNewPlayerName] = useState('');
   const [newPlayerHP, setNewPlayerHP] = useState(40);
   const [statusPickerVisible, setStatusPickerVisible] = useState<number | null>(null);
-  const [itemInputs, setItemInputs] = useState<Record<number, { name: string; type: string }>>({});
 
-  const addEntry = (playerId: number) => {
-    const { name, type } = itemInputs[playerId] || {};
-    if (!name) return;
-
-    setPlayers((prev) =>
-      prev.map((p) => {
-        if (p.id !== playerId) return p;
-        if (type === 'key') {
-          return { ...p, keys: [...p.keys, name] };
-        } else {
-          return { ...p, items: [...p.items, { name, magic: type === 'magic' }] };
-        }
-      })
-    );
-
-    setItemInputs({ ...itemInputs, [playerId]: { name: '', type: 'item' } });
-  };
-
-  const removeEntry = (playerId: number, type: string, index: number) => {
-    setPlayers((prev) =>
-      prev.map((p) => {
-        if (p.id !== playerId) return p;
-        if (type === 'key') {
-          const newKeys = [...p.keys];
-          newKeys.splice(index, 1);
-          return { ...p, keys: newKeys };
-        } else {
-          const newItems = [...p.items];
-          newItems.splice(index, 1);
-          return { ...p, items: newItems };
-        }
-      })
+  const addItemToPlayer = (playerId: number, item: Item) => {
+    setPlayers(prev =>
+      prev.map(p =>
+        p.id === playerId
+          ? { ...p, items: [...p.items, item] }
+          : p
+      )
     );
   };
 
+  const removeItemFromPlayer = (playerId: number, index: number) => {
+    setPlayers(prev =>
+      prev.map(p =>
+        p.id === playerId
+          ? { ...p, items: p.items.filter((_, i) => i !== index) }
+          : p
+      )
+    );
+  };
+
+  const updateItemForPlayer = (playerId: number, index: number, updatedItem: Item) => {
+  setPlayers(prev =>
+    prev.map(p =>
+      p.id === playerId
+        ? {
+            ...p,
+            items: p.items.map((item, i) => (i === index ? updatedItem : item))
+          }
+        : p
+      )
+    );
+  };
 
   const addPlayer = () => {
     if (!newPlayerName.trim()) return;
@@ -131,11 +108,11 @@ export default function App() {
       id: Date.now(),
       name: newPlayerName.trim(),
       hp: newPlayerHP,
+      ac: 10,
+      gold: 0,
       maxHp: newPlayerHP,
       status: [],
-      items: [],
-      keys: [],
-      ammo: 0
+      items: []
     };
     setPlayers([...players, newPlayer]);
     setNewPlayerName('');
@@ -179,6 +156,14 @@ export default function App() {
     );
   };
 
+  const updateGold = (id: number, newGold: number) => {
+    setPlayers((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, gold: newGold } : p))
+    );
+  };
+
+  
+
   return (
     <div className="min-h-screen bg-zinc-900 text-white p-6">
       <h1 className="text-3xl font-bold mb-6">🧙 D&D Dashboard</h1>
@@ -212,7 +197,6 @@ export default function App() {
           const isLow = hpRatio <= 0.25 && player.hp > 0;
           const isOver = player.hp > player.maxHp;
           const isDead = player.hp === 0;
-          const magicItemCount = player.items.filter(i => i.magic).length;
 
           return (
             <div
@@ -241,7 +225,6 @@ export default function App() {
                   onChange={(e) => updateHP(player.id, Number(e.target.value))}
                   className="bg-zinc-700 p-1 rounded w-20 text-center"
                 />
-             
                 <span className="text-sm text-zinc-400">/</span>
                 <input
                   type="number"
@@ -251,6 +234,7 @@ export default function App() {
                   className="bg-zinc-700 p-1 rounded w-20 text-center"
                 />
               </div>
+              
 
               <div className="w-full h-3 bg-zinc-700 rounded-full overflow-hidden">
                 <div
@@ -260,122 +244,23 @@ export default function App() {
                   style={{ width: `${Math.min((player.hp / player.maxHp) * 100, 100)}%` }}
                 ></div>
               </div>
-              
-              <button
-                onClick={() => setStatusPickerVisible(statusPickerVisible === player.id ? null : player.id)}
-                className="mt-2 text-xs text-blue-400 underline"
-              >
-                {statusPickerVisible === player.id ? 'Hide conditions' : 'Edit conditions'}
-              </button>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {player.status.map((s) => (
-                  <div
-                    key={s}
-                    className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-zinc-700 text-zinc-300"
-                  >
-                    <span>{conditionIcons[s] || '❓'}</span>
-                    <span>{s}</span>
-                  </div>
-                ))}
-              </div>
 
-              <div className="mt-2 text-sm">
-               <p className="mb-1">🎒 Items (✨ {magicItemCount} magic):</p>
-              <ul className="ml-4 list-disc">
-                  {player.items.map((item, idx) => (
-                <li
-                  key={idx}
-                  className={`flex justify-between items-center ${
-                    item.magic ? 'text-indigo-400 font-semibold' : ''
-                  }`}
-                >
-                  <span>{item.name}</span>
-                  <button
-                    onClick={() => removeEntry(player.id, 'item', idx)}
-                    className="text-xs text-red-400 ml-2"
-                  > ✖
-                  </button>
-                </li>
-              ))}
-              </ul>
+              <StatusManager
+                conditions={player.status}
+                onToggle={(condition) => toggleStatus(player.id, condition)}
+                showPicker={statusPickerVisible === player.id}
+                onTogglePicker={() =>
+                  setStatusPickerVisible(statusPickerVisible === player.id ? null : player.id)}
+              />
+                            
+              <InventoryManager
+                items={player.items}
+                onAddItem={(item) => addItemToPlayer(player.id, item)}
+                onRemoveItem={(index) => removeItemFromPlayer(player.id, index)}
+                onUpdateItem={(index, updated) => updateItemForPlayer(player.id, index, updated)}
+              />              
 
-                <p className="mt-2">🔑 Keys:</p>
-                <ul className="ml-4 list-disc">
-                  {player.keys.map((key, idx) => (
-                    <li key={idx} className="flex justify-between items-center">
-                      <span>{key}</span>
-                      <button
-                        onClick={() => removeEntry(player.id, 'key', idx)}
-                        className="text-xs text-red-400 ml-2"
-                      >✖</button>
-                    </li>
-                  ))}
-                </ul>
-                
-               <AmmoInput ammo={player.ammo} onChange={(value) => updatePlayerField(player.id, 'ammo', value)}/>
-
-              </div>
-
-          
-
-              {statusPickerVisible === player.id && (
-                <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
-                  {allConditions.map((condition) => (
-                    <button
-                      key={condition}
-                      onClick={() => toggleStatus(player.id, condition)}
-                      className={`px-2 py-1 rounded-full text-left ${
-                        player.status.includes(condition)
-                          ? 'bg-red-600 text-white'
-                          : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
-                      }`}
-                    >
-                      {conditionIcons[condition]} {condition}
-                    </button>
-                  
-                  ))}
-                </div>
-              )}
-          
-              <div className="mt-4">
-              <div className="flex gap-2 mb-2 items-center">
-                <input
-                  type="text"
-                  placeholder="New name"
-                  value={itemInputs[player.id]?.name || ''}
-                  onChange={(e) => setItemInputs({
-                    ...itemInputs,
-                    [player.id]: {
-                      ...itemInputs[player.id],
-                      name: e.target.value
-                    }
-                  })}
-                  className="bg-zinc-700 p-1 rounded w-32 text-xs"
-                />
-                <select
-                  value={itemInputs[player.id]?.type || 'item'}
-                  onChange={(e) => setItemInputs({
-                    ...itemInputs,
-                    [player.id]: {
-                      ...itemInputs[player.id],
-                      type: e.target.value
-                    }
-                  })}
-                  className="bg-zinc-700 p-1 rounded text-xs"
-                >
-                  <option value="item">Item</option>
-                  <option value="magic">Magic Item</option>
-                  <option value="key">Key</option>
-                </select>
-                <button
-                  onClick={() => addEntry(player.id)}
-                  className="text-xs bg-green-600 px-2 py-1 rounded"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-
+                <Currency gold={player.gold} onChange={(g)=>updateGold(player.id,g)}/>
             </div>
             
           );
