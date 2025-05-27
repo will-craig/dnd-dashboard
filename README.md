@@ -1,10 +1,10 @@
-# 🛡️ D&D Player Dashboard
+# D&D Player Dashboard
 
-A lightweight, interactive web app for managing Dungeons & Dragons player states. It allows DMs and players to view and update HP, AC, conditions, inventory, and other key stats in real-time. Built using modern React tooling with a clean component architecture.
+A lightweight, interactive web app for managing Dungeons & Dragons player states. It allows DMs and players to view and update HP, AC, conditions, inventory, and other key stats in real-time.
 
 ---
 
-## 🔧 Technologies
+## Technologies
 
 - **React + TypeScript** — component-based UI structure with type safety
 - **Vite** — fast dev server and bundler
@@ -12,7 +12,7 @@ A lightweight, interactive web app for managing Dungeons & Dragons player states
 - **Modular Components** — broken into logical units like PlayerCard, InventoryManager, StatusManager, etc.
 
 
-## 📦 Features
+## Features
 
 - Editable player name
 - HP & Max HP inputs with damage/threat visual cues (pulse/red border)
@@ -26,7 +26,7 @@ A lightweight, interactive web app for managing Dungeons & Dragons player states
   - Keys (separately listed)
 - Gold (currency) tracker
 
-## 🚧 Planned Features
+## Planned Features
 
 - Real-time updates using SignalR or Firebase
 - Undo recent changes
