@@ -55,3 +55,9 @@ Thumbs.db
 coverage/
 *.lcov
 
+#.NET
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
