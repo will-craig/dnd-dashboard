@@ -1,7 +1,11 @@
-namespace DndDashboard.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class Session
+namespace DndDashboard.Domain.Models;
+
+public class Session : TrackableBase
 {
-    public string Id { get; set; } = string.Empty;
+    [Required]
+    public Guid Id { get; set; }
+    public string PartyName { get; set; } = string.Empty;
     public List<Player> Players { get; set; } = new();
 }

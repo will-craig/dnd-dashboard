@@ -1,7 +1,10 @@
-namespace DndDashboard.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class Player
+namespace DndDashboard.Domain.Models;
+
+public class Player 
 {
+    [Required]
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public int Hp { get; set; }

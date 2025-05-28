@@ -1,7 +1,11 @@
-﻿namespace DndDashboard.Shared.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Item
+namespace DndDashboard.Domain.Models;
+
+public class Item 
 {
+    [Required]
+    public int Id { get; set; } 
     public string Name { get; set; } = string.Empty;
     public bool Magic { get; set; } = false;
     public int? Quantity { get; set; }
