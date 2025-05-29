@@ -14,7 +14,7 @@ public class InMemorySessionStore : ISessionStore
 
     public Task SaveSessionAsync(Session session)
     {
-        _store[session.Id.ToString()] = session;
+        _store[session.Id] = session;
         return Task.CompletedTask;
     }
 }

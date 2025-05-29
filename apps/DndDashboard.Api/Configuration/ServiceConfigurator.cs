@@ -23,6 +23,7 @@ namespace DndDashboard.Api.Configuration
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
 
             if (builder.Environment.IsDevelopment())
                 builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();

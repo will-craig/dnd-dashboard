@@ -1,23 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { pushSession } from "../api/session.client.ts";
-import { v4 } from "uuid";
+import {createSession} from "../api/session.client.ts";
 
 export default function Home() {
     const [partyName, setPartyName] = useState("");
     const navigate = useNavigate();
 
     const handleCreateSession = async () => {
-        const id = v4().replace(/-/g, "").substring(0, 8);
-        const session = {
-            id: id,
-            partyName: partyName,
-            players: [],
-        };
+        if (!partyName.trim()) return;
 
         try {
-            await pushSession(session);
-            navigate(`/session/${id}`);
+            const newSessionId = await createSession(partyName);
+            navigate(`/session/${newSessionId}`);
         } catch (err) {
             console.error("Failed to create session", err);
             alert("Failed to create session.");

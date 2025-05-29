@@ -11,7 +11,7 @@ namespace DndDashboard.Api.Configuration
                 app.UseSwaggerUI();
                 Console.WriteLine("Swagger UI is enabled");
             }
-
+            app.MapControllers();
         }
     }
 }

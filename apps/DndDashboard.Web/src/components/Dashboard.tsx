@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import PlayerCard from './PlayerCard/PlayerCard';
 import type { Player } from '../models/Player';
-import {getSession, pushSession} from "../api/session.client.ts";
+import {pullSession, pushSession} from "../api/session.client.ts";
 import type {Session} from "../models/Session.ts";
 import type {Item} from "../models/Item.ts";
 
@@ -14,7 +14,7 @@ export default function Dashboard() {
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['session', id],
-        queryFn: () => getSession(id!),
+        queryFn: () => pullSession(id!),
         enabled: !!id,
     });
 
@@ -65,8 +65,7 @@ export default function Dashboard() {
                     ? {
                         ...p,
                         items: p.items.map((item, i) => (i === index ? updatedItem : item))
-                    }
-                    : p
+                    } : p
             )
         );
     };
@@ -74,7 +73,7 @@ export default function Dashboard() {
     const addPlayer = () => {
         if (!newPlayerName.trim()) return;
         const newPlayer: Player = {
-            id: Date.now(),
+            id: players.length > 0 ? players[players.length - 1].id + 1 : 1,
             name: newPlayerName.trim(),
             hp: newPlayerHP,
             ac: 10,
@@ -156,3 +155,4 @@ export default function Dashboard() {
         </div>
     );
 }
+
