@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import sessionActions from "../../state/session/session.actions.ts";
 
 const conditionIcons: Record<string, string> = {
   Blinded: '🙈',
@@ -18,22 +19,27 @@ const conditionIcons: Record<string, string> = {
 };
 
 const allConditions = Object.keys(conditionIcons);
-
 type StatusManagerProps = {
-  conditions: string[];
-  onToggle: (condition: string) => void;
+  playerId: number;
+  playerConditions: string[];
 };
 
-const StatusManager: React.FC<StatusManagerProps> = ({
-  conditions,
-  onToggle
-}) => {
+const StatusManager: React.FC<StatusManagerProps> = ({playerId, playerConditions}) => {
+  const {updatePlayerField} = sessionActions();
+  
   const [showPicker, setShowPicker] = useState(false);
-
+  
+  const handleToggleCondition = (condition: string) => {
+    const newConditions = playerConditions.includes(condition)
+        ? playerConditions.filter((c) => c !== condition)
+        : [...playerConditions, condition];
+    updatePlayerField(playerId, 'status', newConditions);
+  };
+  
   return (
     <div className="mt-2">
       <div className="flex flex-wrap gap-2">
-        {conditions.map((condition) => (
+        {playerConditions.map((condition) => (
           <div
             key={condition}
             className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-zinc-700 text-zinc-300"
@@ -49,9 +55,9 @@ const StatusManager: React.FC<StatusManagerProps> = ({
           {allConditions.map((condition) => (
             <button
               key={condition}
-              onClick={() => onToggle(condition)}
+              onClick={() => handleToggleCondition(condition)}
               className={`px-2 py-1 rounded-full text-left ${
-                conditions.includes(condition)
+                  playerConditions.includes(condition)
                   ? 'bg-red-600 text-white'
                   : 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
               }`}

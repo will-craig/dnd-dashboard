@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {createSession} from "../api/session.client.ts";
+import {createSession} from "../clients/session.client.ts";
 
 export default function Home() {
     const [partyName, setPartyName] = useState("");

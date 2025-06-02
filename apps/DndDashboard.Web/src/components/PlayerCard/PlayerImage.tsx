@@ -1,11 +1,13 @@
 import React from 'react';
+import sessionActions from "../../state/session/session.actions.ts";
 
 type PlayerImageProps = {
-  image?: string;
-  onChange: (image: string) => void;
+  playerId: number,
+  image?: string
 };
 
-const PlayerImage: React.FC<PlayerImageProps> = ({ image, onChange }) => {
+const PlayerImage: React.FC<PlayerImageProps> = ({ playerId, image }) => {
+  const { updatePlayerField } = sessionActions();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -27,7 +29,7 @@ const PlayerImage: React.FC<PlayerImageProps> = ({ image, onChange }) => {
         if (ctx) {
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           const compressed = canvas.toDataURL('image/jpeg', 0.7); // quality 70%
-          onChange(compressed);
+          updatePlayerField(playerId, 'image', compressed)
         }
       };
 

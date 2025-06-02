@@ -1,18 +1,22 @@
 import React from 'react';
+import sessionActions from "../../../state/session/session.actions.ts";
 
 type ArmourClassProps = {
+  playerId: number;
   ac: number;
-  onChange: (value: number) => void;
 };
 
-const ArmourClass: React.FC<ArmourClassProps> = ({ ac, onChange }) => {
+const ArmourClass: React.FC<ArmourClassProps> = ({ playerId, ac }) => {
+    
+  const {updatePlayerField} = sessionActions();
+  
   return (
       <div className="flex items-center gap-1 text-sm ml-4">
         <span className="text-zinc-400">🛡 AC:</span>
         <input
           type="number"
           value={ac}
-          onChange={(e) => onChange(Number(e.target.value))}
+          onChange={(e) => updatePlayerField(playerId, 'ac', Number(e.target.value))}
           className="bg-zinc-700 rounded px-2 w-14 text-center"
         />
       </div>

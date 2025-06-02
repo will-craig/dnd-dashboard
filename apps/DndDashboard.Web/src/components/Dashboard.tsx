@@ -1,111 +1,62 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
 import PlayerCard from './PlayerCard/PlayerCard';
-import type { Player } from '../models/Player';
-import {pullSession, pushSession} from "../api/session.client.ts";
-import type {Session} from "../models/Session.ts";
-import type {Item} from "../models/Item.ts";
+import type {Player} from "../models/Player.ts";
+import sessionActions from "../state/session/session.actions.ts";
+import {connectToSessionHub} from "../services/signalHub.ts";
+import {pullSession} from "../clients/session.client.ts";
+import {useQuery} from "@tanstack/react-query";
 
 export default function Dashboard() {
     const { id } = useParams();
-    const [session, setSession] = useState<Session | null>(null);
-    const [players, setPlayers] = useState<Player[]>([]);
-
+    const { session, sessionFromServer, addPlayer, sessionUpdate } = sessionActions();
+    
     const { data, isLoading, error } = useQuery({
         queryKey: ['session', id],
         queryFn: () => pullSession(id!),
         enabled: !!id,
     });
-
-    const mutation = useMutation({
-        mutationFn: pushSession,
-    });
-
+    
     useEffect(() => {
         if (data) {
-            setSession(data);
-            setPlayers(data.players || []);
+            sessionFromServer(data);
+            connectToSessionHub(data.id, sessionFromServer)
+                .then(() => console.log('dashboard connectToSessionHub complete'))
+                .catch(() => console.log('dashboard connectToSessionHub failed'));
         }
     }, [data]);
 
-    useEffect(() => {
-        if (session) {
-            mutation.mutate({ ...session, players: players });
-        }
-    }, [players]);
+    const players = session?.players || [];
 
     const [newPlayerName, setNewPlayerName] = useState('');
-    const [newPlayerHP, setNewPlayerHP] = useState(40);
+    const [newPlayerHP, setNewPlayerHP] = useState(10);
+    //new bits states for pre-created user here (if wanna initialise with more values)
 
-    const addItemToPlayer = (playerId: number, item: Item) => {
-        setPlayers(prev =>
-            prev.map(p =>
-                p.id === playerId
-                    ? { ...p, items: [...p.items, item] }
-                    : p
-            )
-        );
-    };
-
-    const removeItemFromPlayer = (playerId: number, index: number) => {
-        setPlayers(prev =>
-            prev.map(p =>
-                p.id === playerId
-                    ? { ...p, items: p.items.filter((_, i) => i !== index) }
-                    : p
-            )
-        );
-    };
-
-    const updateItemForPlayer = (playerId: number, index: number, updatedItem: Item) => {
-        setPlayers(prev =>
-            prev.map(p =>
-                p.id === playerId
-                    ? {
-                        ...p,
-                        items: p.items.map((item, i) => (i === index ? updatedItem : item))
-                    } : p
-            )
-        );
-    };
-
-    const addPlayer = () => {
-        if (!newPlayerName.trim()) return;
-        const newPlayer: Player = {
-            id: players.length > 0 ? players[players.length - 1].id + 1 : 1,
-            name: newPlayerName.trim(),
+    const handleAddPlayer = () => {
+        const newPlayer = {
+            id: Date.now(),
+            name: newPlayerName,
             hp: newPlayerHP,
-            ac: 10,
-            gold: 0,
             maxHp: newPlayerHP,
+            gold: 0,
+            ac: 10,
+            image: '',
+            items: [],
             status: [],
-            items: []
         };
-        setPlayers([...players, newPlayer]);
-        setNewPlayerName('');
-        setNewPlayerHP(40);
-    };
-
-    const updatePlayerField = <key extends keyof Player>(
-        id: number,
-        field: key,
-        value: Player[key]
-    ) => {
-        setPlayers(prev =>
-            prev.map(p => (p.id === id ? { ...p, [field]: value } : p))
-        );
+        addPlayer(newPlayer);
     };
 
     if (isLoading) return <div className="p-6 text-white">Loading...</div>;
+    
     if (error || !session) return <div className="p-6 text-red-500">Failed to load session.</div>;
-
+    
     return (
         <div className="min-h-screen bg-zinc-900 text-white p-6">
             <input
                 type="text"
                 value={session.partyName}
-                onChange={(e) => setSession({ ...session, partyName: e.target.value })}
+                onChange={(e) => sessionUpdate({ ...session, partyName: e.target.value })}
                 className="text-3xl font-bold mb-6 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
 
@@ -125,7 +76,7 @@ export default function Dashboard() {
                     className="bg-zinc-800 p-2 rounded w-24 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 <button
-                    onClick={addPlayer}
+                    onClick={handleAddPlayer}
                     className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded"
                 >
                     Add Player
@@ -133,26 +84,13 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl2:grid-cols-6 gap-6">
-                {players.map((p) => (
+                {players.map((player: Player) => (
                     <PlayerCard
-                        key={p.id}
-                        player={p}
-                        handlers={{
-                            onUpdateHp: (id, hp) => updatePlayerField(id, 'hp', hp),
-                            onUpdateMaxHp: (id, maxHp) => updatePlayerField(id, 'maxHp', maxHp),
-                            onUpdateName: (id, name) => updatePlayerField(id, 'name', name),
-                            onUpdateGold: (id, gold) => updatePlayerField(id, 'gold', gold),
-                            onUpdateAc: (id, ac) => updatePlayerField(id, 'ac', ac),
-                            onUpdateImage: (id, image) => updatePlayerField(id, 'image', image),
-                            onUpdateConditions: (id, conditions) => updatePlayerField(id, 'status', conditions),
-                            onAddItem: addItemToPlayer,
-                            onRemoveItem: removeItemFromPlayer,
-                            onUpdateItem: updateItemForPlayer,
-                        }}
+                        key={player.id}
+                        player={player}
                     />
                 ))}
             </div>
         </div>
     );
 }
-

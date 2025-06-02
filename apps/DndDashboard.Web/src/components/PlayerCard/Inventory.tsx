@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import sessionActions from "../../state/session/session.actions.ts";
 
 export type Item = {
   name: string;
@@ -10,18 +11,12 @@ export type Item = {
 export type InventoryType = 'item' | 'item-qty' | 'magic' | 'key' | 'ammo';
 
 type InventoryManagerProps = {
-  items: Item[];
-  onAddItem: (item: Item) => void;
-  onRemoveItem: (index: number) => void;
-  onUpdateItem: (index: number, updatedItem: Item) => void;
+  playerId: number;
+  items: Item[]
 };
 
-const InventoryManager: React.FC<InventoryManagerProps> = ({
-  items,
-  onAddItem,
-  onRemoveItem,
-  onUpdateItem,
-}) => {
+const InventoryManager: React.FC<InventoryManagerProps> = ({playerId, items}) => {
+  const {addItemToPlayer, removeItemFromPlayer, updateItemForPlayer} = sessionActions();
   const displayItems = items.filter((item) => item.type === 'item' || item.type === 'item-qty') ?? [];
   const displayKeys = items.filter((item) => item.type === 'key') ?? [];
   const displayAmmo = items.filter((item) => item.type === 'ammo') ?? [];
@@ -30,9 +25,9 @@ const InventoryManager: React.FC<InventoryManagerProps> = ({
   //catch items being set to 0 before sending up the chain
   const handleItemUpdate = (index: number, updatedItem: Item) => {
     if (updatedItem.quantity !== undefined && updatedItem.quantity <= 0) {
-        onRemoveItem(index);
+      removeItemFromPlayer(playerId, index);
     } else {
-        onUpdateItem(index, updatedItem);
+      updateItemForPlayer(playerId, index, updatedItem);
     }
   };
 
@@ -45,8 +40,8 @@ const InventoryManager: React.FC<InventoryManagerProps> = ({
         <AmmoList
           ammunition={displayAmmo}
           allItems={items}
-          onRemove={onRemoveItem}
-          onUpdate={onUpdateItem}/>
+          onRemove={(x) => {removeItemFromPlayer(playerId, x)}}
+          onUpdate={(x, item) => updateItemForPlayer(playerId, x, item)}/>
       </div>}
       {magicItemCount > 0 && (<p className="text-sm text-indigo-400">✨ Magic Items: {magicItemCount}</p>)}
       {displayItems.length > 0 && 
@@ -55,18 +50,18 @@ const InventoryManager: React.FC<InventoryManagerProps> = ({
         <ItemList 
             items={displayItems} 
             allItems={items} 
-            onRemove={onRemoveItem} 
+            onRemove={(x) => {removeItemFromPlayer(playerId, x)}} 
             onUpdate={handleItemUpdate}/>
       </div>}
       {displayKeys.length > 0 && <div>
         <p className="mt-2">🔑 Keys:</p>
         <KeyList 
             items={displayKeys} 
-            onRemove={onRemoveItem} 
+            onRemove={(x) => {removeItemFromPlayer(playerId, x)}} 
             allItems={items} />
       </div>}
 
-      <InventoryAddForm onAddItem={onAddItem} />
+      <InventoryAddForm onAddItem={(x) => addItemToPlayer(playerId, x)} />
     </div>
   );
 };

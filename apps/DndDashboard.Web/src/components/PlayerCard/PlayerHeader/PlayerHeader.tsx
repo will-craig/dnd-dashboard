@@ -2,17 +2,17 @@ import React from 'react';
 import PlayerHealth from './PlayerHealth';
 import HealthBar from './HealthBar';
 import ArmourClass from './ArmorClass';
+import sessionActions from "../../../state/session/session.actions.ts";
 
 type PlayerHeaderProps = {
+  playerId: number;
   hp: number;
   maxHp: number;
   ac: number;
-  onChangeHp: (value: number) => void;
-  onChangeMaxHp: (value: number) => void;
-  onChangeAc: (value: number) => void;
 };
 
-const PlayerHeader: React.FC<PlayerHeaderProps> = ({hp, maxHp, ac, onChangeHp, onChangeMaxHp, onChangeAc}) => {
+const PlayerHeader: React.FC<PlayerHeaderProps> = ({playerId, hp, maxHp, ac}) => {
+  const {updatePlayerField} = sessionActions();
   return (     
     <div className="flex flex-col gap-2">
         <div className="flex justify-between items-start">
@@ -20,11 +20,11 @@ const PlayerHeader: React.FC<PlayerHeaderProps> = ({hp, maxHp, ac, onChangeHp, o
             <PlayerHealth 
                 hp={hp} 
                 maxHp={maxHp} 
-                onChangeHp={(val: number) => onChangeHp(val)}
-                onChangeMaxHp={(val: number) => onChangeMaxHp(val)}  
+                onChangeHp={(val: number) => updatePlayerField(playerId, 'hp', val)}
+                onChangeMaxHp={(val: number) => updatePlayerField(playerId, 'maxHp', val)}
                 />
                 
-            <ArmourClass ac={ac} onChange={(val) => onChangeAc(val)}/>
+            <ArmourClass playerId={playerId} ac={ac}/>
 
         </div>        
         <HealthBar hp={hp} maxHp={maxHp}/>
