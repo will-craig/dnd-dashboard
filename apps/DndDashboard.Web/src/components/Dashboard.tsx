@@ -9,7 +9,7 @@ import {useQuery} from "@tanstack/react-query";
 
 export default function Dashboard() {
     const { id } = useParams();
-    const { session, sessionFromServer, addPlayer, sessionUpdate } = sessionActions();
+    const { session, sessionFromServerUpdate, addPlayer, sessionUpdate } = sessionActions();
     
     const { data, isLoading, error } = useQuery({
         queryKey: ['session', id],
@@ -19,12 +19,12 @@ export default function Dashboard() {
     
     useEffect(() => {
         if (data) {
-            sessionFromServer(data);
-            connectToSessionHub(data.id, sessionFromServer)
+            sessionFromServerUpdate(data);
+            connectToSessionHub(data.id, sessionFromServerUpdate)
                 .then(() => console.log('dashboard connectToSessionHub complete'))
                 .catch(() => console.log('dashboard connectToSessionHub failed'));
         }
-    }, [data]);
+    }, [data, sessionFromServerUpdate]);
 
     const players = session?.players || [];
 

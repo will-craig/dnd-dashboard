@@ -8,8 +8,8 @@ type PlayerHealthProps = {
 };
 
 const PlayerHealth: React.FC<PlayerHealthProps> = ({hp, maxHp, onChangeHp, onChangeMaxHp}) => {
-  return (     
-    <div className={`flex gap-2 items-center"`}>
+  return (
+    <div className={`flex gap-2 items-center`}>
       <label className="text-sm text-zinc-300">HP:</label>
       <input
           type="number"

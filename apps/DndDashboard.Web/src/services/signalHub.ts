@@ -1,13 +1,12 @@
 import {HubConnectionBuilder, HubConnection, LogLevel} from "@microsoft/signalr";
 import type { Session } from "../models/Session.ts";
 
-const BASE_URL: string = import.meta.env.VITE_SIGNAL_HUB_BASE_URL;
-
+const SESSION_HUB_URL: string = `${import.meta.env.VITE_SIGNAL_HUB_BASE_URL}/hub/sessionHub`;
 let connection: HubConnection | null = null;
 
-export async function connectToSessionHub(sessionId: string, onUpdate: (session: any) => void) {
+export async function connectToSessionHub(sessionId: string, onUpdate: (session: Session) => void) {
     connection = new HubConnectionBuilder()
-        .withUrl(BASE_URL, {
+        .withUrl(SESSION_HUB_URL, {
             withCredentials: true
         })
         .withAutomaticReconnect()

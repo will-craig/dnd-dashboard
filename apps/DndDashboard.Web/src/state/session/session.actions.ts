@@ -25,7 +25,7 @@ export default function sessionActions() {
     };
 
     // External action used when receiving from SignalR or API
-    const sessionFromServer = (updatedSession: typeof session) => {
+    const sessionFromServerUpdate = (updatedSession: typeof session) => {
         if (updatedSession) {
             dispatch(setSession(updatedSession));
         }
@@ -80,7 +80,7 @@ export default function sessionActions() {
     return {
         session,
         sessionUpdate,
-        sessionFromServer,
+        sessionFromServerUpdate,
         updatePlayers,
         addPlayer,
         updatePlayerField,

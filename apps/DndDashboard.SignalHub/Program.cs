@@ -9,10 +9,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins(allowedOrigins)
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
+        if(builder.Environment.IsDevelopment())
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        else
+            policy.WithOrigins("TODO: will add with prod value here")
+                .WithHeaders("Content-Type", "Authorization")
+                .WithMethods("GET", "POST")
+                .AllowCredentials();
     });
 });
 
