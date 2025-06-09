@@ -1,12 +1,11 @@
 using DndDashboard.Domain.Models;
-using DndDashboard.Domain.Services;
 using Microsoft.AspNetCore.SignalR;
+using DndDashboard.SignalHub.Services;
 
 namespace DndDashboard.SignalHub.Hubs;
 
-public class SessionHub(ISessionStore store) : Hub
+public class SessionHub(ISessionUpdatePublisher queue) : Hub
 {
-    // Join a group for a specific sessionId
     public async Task JoinSession(string sessionId)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
@@ -17,8 +16,7 @@ public class SessionHub(ISessionStore store) : Hub
     {
         // Broadcast the updated session to other users
         await Clients.OthersInGroup(sessionId).SendAsync("ReceiveUpdate", updatedSession);
-
-        // TODO Save to Redis (do via queue)
-        await store.SaveSessionAsync(updatedSession);
+        // publish the updated session to the message queue, and update the session cache
+        await queue.PublishSessionUpdate(updatedSession);
     }
 }

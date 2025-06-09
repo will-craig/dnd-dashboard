@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4"/>
+        <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
         <PackageReference Include="StackExchange.Redis" Version="2.8.37" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="8.1.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.2" />
@@ -23,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DndDashboard.Domain\DndDashboard.Domain.csproj" />
+      <ProjectReference Include="..\DndDashboard.SignalHub\DndDashboard.SignalHub.csproj" />
     </ItemGroup>
 
 </Project>

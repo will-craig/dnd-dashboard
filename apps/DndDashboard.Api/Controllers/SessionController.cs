@@ -27,7 +27,6 @@ public class SessionController(ISessionStore sessionStore) : ControllerBase
             return NotFound();
 
         session.Id = id; 
-        session.UpdatedAt = DateTime.UtcNow;
         await sessionStore.SaveSessionAsync(session);
         return NoContent();
     }

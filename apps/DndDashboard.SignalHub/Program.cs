@@ -1,6 +1,5 @@
-using DndDashboard.Domain.Services;
 using DndDashboard.SignalHub.Hubs;
-using StackExchange.Redis;
+using DndDashboard.SignalHub.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,20 +16,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// TODO: maybe move this in seperate service update via que
-if (builder.Environment.IsDevelopment())
-    builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
-else
-{
-    var redisConnectionString = builder.Configuration["RedisConnection"]
-                                ?? throw new InvalidOperationException("Redis connection string not configured");
-
-    var redis = ConnectionMultiplexer.Connect(redisConnectionString);
-    builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
-    builder.Services.AddSingleton<ISessionStore, RedisSessionStore>();
-}
-
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<ISessionUpdatePublisher, SessionUpdatePublisher>();
 
 var app = builder.Build();
 

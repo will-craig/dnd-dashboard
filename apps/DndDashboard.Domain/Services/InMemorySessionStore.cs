@@ -14,6 +14,7 @@ public class InMemorySessionStore : ISessionStore
 
     public Task SaveSessionAsync(Session session)
     {
+        session.UpdatedAt = DateTime.UtcNow;
         _store[session.Id] = session;
         return Task.CompletedTask;
     }

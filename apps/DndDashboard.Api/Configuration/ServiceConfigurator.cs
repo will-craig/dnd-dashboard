@@ -1,3 +1,4 @@
+using DndDashboard.Api.Services.QueueHandlers;
 using DndDashboard.Domain.Services;
 using StackExchange.Redis;
 
@@ -36,6 +37,7 @@ namespace DndDashboard.Api.Configuration
                 builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
                 builder.Services.AddSingleton<ISessionStore, RedisSessionStore>();
             }
+            builder.Services.AddHostedService<SessionConsumer>();
         }
     }
 }

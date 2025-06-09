@@ -22,6 +22,7 @@ namespace DndDashboard.Domain.Services
 
         public async Task SaveSessionAsync(Session session)
         {
+            session.UpdatedAt = DateTime.UtcNow;
             var serialized = JsonSerializer.Serialize(session);
             await _db.StringSetAsync($"session:{session.Id}", serialized, TimeSpan.FromDays(20));
         }

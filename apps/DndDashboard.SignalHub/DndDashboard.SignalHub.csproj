@@ -14,11 +14,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\apps\DndDashboard.Domain\DndDashboard.Domain.csproj" />
+      <ProjectReference Include="..\DndDashboard.Domain\DndDashboard.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+      <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
     </ItemGroup>
 
 </Project>
