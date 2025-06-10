@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import PlayerCard from './PlayerCard/PlayerCard';
 import type {Player} from "../models/Player.ts";
 import useSessionActions from "../state/session/useSessionActions.ts";
-import {connectToSessionHub} from "../services/signalHub.ts";
+import {connectToSessionHub, stopSessionHub} from "../services/signalHub.ts";
 import {pullSession} from "../clients/session.client.ts";
 import {useQuery} from "@tanstack/react-query";
 
@@ -24,10 +24,14 @@ export default function Dashboard() {
     }, [data]);
     
     useEffect(() => {
-        if (!id) return;
-        connectToSessionHub(id, sessionFromServerUpdate)
-            .then(() => console.log('dashboard connectToSessionHub complete'))
-            .catch(() => console.log('dashboard connectToSessionHub failed'));
+        if (id) {
+            connectToSessionHub(id, sessionFromServerUpdate)
+                .then(() => console.log('dashboard connectToSessionHub complete'))
+                .catch(() => console.log('dashboard connectToSessionHub failed'));
+        }
+        return () => {
+            stopSessionHub();
+        };
     }, [id]);
 
     const players = session?.players || [];

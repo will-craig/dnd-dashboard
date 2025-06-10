@@ -42,15 +42,15 @@ export default function useSessionActions() {
         updatePlayers(players);
     };
 
-    const updatePlayerField = <K extends keyof Player>(id: number, field: K, value: Player[K]) => {
+    const updatePlayerField = <K extends keyof Player>(playerId: string, field: K, value: Player[K]) => {
         if (!session) return;
         const players = session.players.map(p =>
-            p.id === id ? { ...p, [field]: value } : p
+            p.id === playerId ? { ...p, [field]: value } : p
         );
         updatePlayers(players);
     };
 
-    const addItemToPlayer = (playerId: number, item: Item) => {
+    const addItemToPlayer = (playerId: string, item: Item) => {
         if (!session) return;
         const players = session.players.map(p =>
             p.id === playerId ? { ...p, items: [...p.items, item] } : p
@@ -58,7 +58,7 @@ export default function useSessionActions() {
         updatePlayers(players);
     };
 
-    const removeItemFromPlayer = (playerId: number, index: number) => {
+    const removeItemFromPlayer = (playerId: string, index: number) => {
         if (!session) return;
         const players = session.players.map(p =>
             p.id === playerId ? { ...p, items: p.items.filter((_, i) => i !== index) } : p
@@ -66,7 +66,7 @@ export default function useSessionActions() {
         updatePlayers(players);
     };
 
-    const updateItemForPlayer = (playerId: number, index: number, updatedItem: Item) => {
+    const updateItemForPlayer = (playerId: string, index: number, updatedItem: Item) => {
         if (!session) return;
         const players = session.players.map(p =>
             p.id === playerId ? {

@@ -5,7 +5,7 @@ import ArmourClass from './ArmorClass';
 import useSessionActions from "../../../state/session/useSessionActions.ts";
 
 type PlayerHeaderProps = {
-  playerId: number;
+  playerId: string;
   hp: number;
   maxHp: number;
   ac: number;

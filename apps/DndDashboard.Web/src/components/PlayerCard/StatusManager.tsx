@@ -20,7 +20,7 @@ const conditionIcons: Record<string, string> = {
 
 const allConditions = Object.keys(conditionIcons);
 type StatusManagerProps = {
-  playerId: number;
+  playerId: string;
   playerConditions: string[];
 };
 

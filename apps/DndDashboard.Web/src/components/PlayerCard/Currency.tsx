@@ -2,7 +2,7 @@ import React from 'react';
 import useSessionActions from "../../state/session/useSessionActions.ts";
 
 type CurrencyProps = {
-  playerId: number;  
+  playerId: string;  
   gold: number;
 };
 

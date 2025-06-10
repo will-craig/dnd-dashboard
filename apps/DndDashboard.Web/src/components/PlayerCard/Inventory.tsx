@@ -11,7 +11,7 @@ export type Item = {
 export type InventoryType = 'item' | 'item-qty' | 'magic' | 'key' | 'ammo';
 
 type InventoryManagerProps = {
-  playerId: number;
+  playerId: string;
   items: Item[]
 };
 

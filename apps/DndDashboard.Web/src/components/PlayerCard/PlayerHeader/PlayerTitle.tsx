@@ -2,7 +2,7 @@ import React from 'react';
 import useSessionActions from "../../../state/session/useSessionActions.ts";
 
 type PlayerTitle = {
-  playerId: number;
+  playerId: string;
   playerName: string;
   isDead: boolean;
 };

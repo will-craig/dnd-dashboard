@@ -2,7 +2,7 @@ import React from 'react';
 import useSessionActions from "../../state/session/useSessionActions.ts";
 
 type PlayerImageProps = {
-  playerId: number,
+  playerId: string,
   image?: string
 };
 
