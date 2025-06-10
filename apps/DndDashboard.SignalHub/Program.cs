@@ -22,7 +22,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 builder.Services.AddSingleton<ISessionUpdatePublisher, SessionUpdatePublisher>();
 
 var app = builder.Build();

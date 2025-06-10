@@ -1,5 +1,5 @@
 import React from 'react';
-import sessionActions from "../../../state/session/session.actions.ts";
+import useSessionActions from "../../../state/session/useSessionActions.ts";
 
 type PlayerTitle = {
   playerId: number;
@@ -8,7 +8,7 @@ type PlayerTitle = {
 };
 
 const PlayerTitle: React.FC<PlayerTitle> = ({playerId, playerName, isDead}) => {
-  const {updatePlayerField} = sessionActions();
+  const {updatePlayerField} = useSessionActions();
   return (
        <div className="flex items-center gap-2">
         {isDead && <span>💀</span>}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import sessionActions from "../../state/session/session.actions.ts";
+import useSessionActions from "../../state/session/useSessionActions.ts";
 
 export type Item = {
   name: string;
@@ -16,7 +16,7 @@ type InventoryManagerProps = {
 };
 
 const InventoryManager: React.FC<InventoryManagerProps> = ({playerId, items}) => {
-  const {addItemToPlayer, removeItemFromPlayer, updateItemForPlayer} = sessionActions();
+  const {addItemToPlayer, removeItemFromPlayer, updateItemForPlayer} = useSessionActions();
   const displayItems = items.filter((item) => item.type === 'item' || item.type === 'item-qty') ?? [];
   const displayKeys = items.filter((item) => item.type === 'key') ?? [];
   const displayAmmo = items.filter((item) => item.type === 'ammo') ?? [];

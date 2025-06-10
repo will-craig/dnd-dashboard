@@ -2,14 +2,14 @@ import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerCard from './PlayerCard/PlayerCard';
 import type {Player} from "../models/Player.ts";
-import sessionActions from "../state/session/session.actions.ts";
+import useSessionActions from "../state/session/useSessionActions.ts";
 import {connectToSessionHub} from "../services/signalHub.ts";
 import {pullSession} from "../clients/session.client.ts";
 import {useQuery} from "@tanstack/react-query";
 
 export default function Dashboard() {
     const { id } = useParams();
-    const { session, sessionFromServerUpdate, addPlayer, sessionUpdate } = sessionActions();
+    const { session, sessionFromServerUpdate, addPlayer, sessionUpdate } = useSessionActions();
     
     const { data, isLoading, error } = useQuery({
         queryKey: ['session', id],
@@ -20,21 +20,24 @@ export default function Dashboard() {
     useEffect(() => {
         if (data) {
             sessionFromServerUpdate(data);
-            connectToSessionHub(data.id, sessionFromServerUpdate)
-                .then(() => console.log('dashboard connectToSessionHub complete'))
-                .catch(() => console.log('dashboard connectToSessionHub failed'));
         }
-    }, [data, sessionFromServerUpdate]);
+    }, [data]);
+    
+    useEffect(() => {
+        if (!id) return;
+        connectToSessionHub(id, sessionFromServerUpdate)
+            .then(() => console.log('dashboard connectToSessionHub complete'))
+            .catch(() => console.log('dashboard connectToSessionHub failed'));
+    }, [id]);
 
     const players = session?.players || [];
 
     const [newPlayerName, setNewPlayerName] = useState('');
     const [newPlayerHP, setNewPlayerHP] = useState(10);
-    //new bits states for pre-created user here (if wanna initialise with more values)
 
     const handleAddPlayer = () => {
         const newPlayer = {
-            id: Date.now(),
+            id: Date.now().toString(),
             name: newPlayerName,
             hp: newPlayerHP,
             maxHp: newPlayerHP,

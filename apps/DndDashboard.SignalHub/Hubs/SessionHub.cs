@@ -11,12 +11,11 @@ public class SessionHub(ISessionUpdatePublisher queue) : Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
     }
 
-    // Receive updated session data and broadcast to others
-    public async Task UpdateSession(string sessionId, Session updatedSession)
+    public async Task UpdateSession(Session sessionData)
     {
         // Broadcast the updated session to other users
-        await Clients.OthersInGroup(sessionId).SendAsync("ReceiveUpdate", updatedSession);
+        await Clients.OthersInGroup(sessionData.Id).SendAsync("ReceiveUpdate", sessionData);
         // publish the updated session to the message queue, and update the session cache
-        await queue.PublishSessionUpdate(updatedSession);
+        await queue.PublishSessionUpdate(sessionData);
     }
 }

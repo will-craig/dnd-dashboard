@@ -1,5 +1,5 @@
 import React from 'react';
-import sessionActions from "../../state/session/session.actions.ts";
+import useSessionActions from "../../state/session/useSessionActions.ts";
 
 type CurrencyProps = {
   playerId: number;  
@@ -7,7 +7,7 @@ type CurrencyProps = {
 };
 
 const Currency: React.FC<CurrencyProps> = ({playerId, gold }) => {
- const {updatePlayerField} = sessionActions();
+ const {updatePlayerField} = useSessionActions();
     
   return (
     <div className="mt-2">

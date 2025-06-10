@@ -1,6 +1,6 @@
 using System.Text;
+using System.Text.Json;
 using DndDashboard.Domain.Models;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 
 namespace DndDashboard.SignalHub.Services;
@@ -32,7 +32,7 @@ public class SessionUpdatePublisher(string hostName = "localhost"): ISessionUpda
         await channel.BasicPublishAsync(
             exchange: string.Empty,
             routingKey: QueueName,
-            body: Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(session))
+            body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(session))
         );
     }
 }

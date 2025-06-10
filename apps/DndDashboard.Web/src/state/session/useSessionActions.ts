@@ -7,12 +7,12 @@ import type {Item} from "../../models/Item.ts";
 import {sendSessionUpdate} from "../../services/signalHub.ts";
 
 const debouncedSend = debounce((session) => {
-    sendSessionUpdate(session.id, session)
+    sendSessionUpdate(session)
         .then(() => console.log(`Session update sent for ${session.id}`))
         .catch(err => console.error(`Failed to send session update for ${session.id}:`, err));
 }, 100);
 
-export default function sessionActions() {
+export default function useSessionActions() {
     const dispatch = useDispatch();
     const session = useSelector((state: RootState) => state.session.session);
 

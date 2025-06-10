@@ -1,5 +1,5 @@
 import React from 'react';
-import sessionActions from "../../state/session/session.actions.ts";
+import useSessionActions from "../../state/session/useSessionActions.ts";
 
 type PlayerImageProps = {
   playerId: number,
@@ -7,7 +7,7 @@ type PlayerImageProps = {
 };
 
 const PlayerImage: React.FC<PlayerImageProps> = ({ playerId, image }) => {
-  const { updatePlayerField } = sessionActions();
+  const { updatePlayerField } = useSessionActions();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

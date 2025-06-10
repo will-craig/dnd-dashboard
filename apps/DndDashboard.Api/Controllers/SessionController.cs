@@ -1,7 +1,7 @@
 using DndDashboard.Api.Helper;
-using Microsoft.AspNetCore.Mvc;
 using DndDashboard.Domain.Models;
 using DndDashboard.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DndDashboard.Api.Controllers;
 
@@ -40,8 +40,7 @@ public class SessionController(ISessionStore sessionStore) : ControllerBase
         var session = new Session
         {
             Id = GenerateId.Create(),
-            PartyName = partyName,
-            Players = []
+            PartyName = partyName
         };
     
         await sessionStore.SaveSessionAsync(session);

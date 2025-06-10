@@ -1,7 +1,7 @@
 import type { Item } from './Item';
 
 export type Player = {
-  id: number;
+  id: string;
   name: string;
   hp: number;
   maxHp: number;

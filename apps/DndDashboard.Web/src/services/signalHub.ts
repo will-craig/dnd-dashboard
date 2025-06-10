@@ -25,9 +25,30 @@ export async function connectToSessionHub(sessionId: string, onUpdate: (session:
     }
 }
 
-export async function sendSessionUpdate(sessionId: string, session: Session) {
+export async function sendSessionUpdate(session: Session) {
     if (connection && connection.state === "Connected") {
-        await connection.invoke("UpdateSession", sessionId, session);
+        const sessionData = {
+            Id: session.id,
+            PartyName: session.partyName,
+            Players: session.players.map(p => ({
+                Id: p.id,
+                Name: p.name,
+                Hp: p.hp,
+                MaxHp: p.maxHp,
+                Ac: p.ac,
+                Gold: p.gold,
+                Image: p.image,
+                Status: p.status,
+                Items: p.items.map(i => ({
+                    Name: i.name,
+                    Type: i.type,
+                    Magic: i.magic,
+                    Quantity: i.quantity,
+                }))
+            }))
+        }
+        console.log("Sending session update:", sessionData);
+        await connection.invoke("UpdateSession", sessionData);
     }
 }
 
@@ -40,3 +61,4 @@ export function stopSessionHub() {
         connection = null;
     }
 }
+

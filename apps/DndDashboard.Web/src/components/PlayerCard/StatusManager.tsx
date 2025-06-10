@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import sessionActions from "../../state/session/session.actions.ts";
+import useSessionActions from "../../state/session/useSessionActions.ts";
 
 const conditionIcons: Record<string, string> = {
   Blinded: '🙈',
@@ -25,7 +25,7 @@ type StatusManagerProps = {
 };
 
 const StatusManager: React.FC<StatusManagerProps> = ({playerId, playerConditions}) => {
-  const {updatePlayerField} = sessionActions();
+  const {updatePlayerField} = useSessionActions();
   
   const [showPicker, setShowPicker] = useState(false);
   
