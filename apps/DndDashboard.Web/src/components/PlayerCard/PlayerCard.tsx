@@ -6,6 +6,7 @@ import StatusManager from './StatusManager';
 import Currency from './Currency';
 import PlayerImage from './PlayerImage';
 import type { Player } from '../../models/Player';
+import SpellSlots from "../SpellSlots.tsx";
 
 type PlayerCardProps = {
     player: Player
@@ -30,6 +31,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({player}) => {
             <StatusManager playerId={player.id} playerConditions={player.status}/>
             <InventoryManager playerId={player.id} items={player.items}/>              
             <Currency playerId={player.id} gold={player.gold}/>
+            <SpellSlots playerId={player.id} slots={player.spellSlots}/>
         </div>
   );
 };

@@ -39,6 +39,7 @@ export async function sendSessionUpdate(session: Session) {
                 Gold: p.gold,
                 Image: p.image,
                 Status: p.status,
+                SpellSlots: p.spellSlots,
                 Items: p.items.map(i => ({
                     Name: i.name,
                     Type: i.type,

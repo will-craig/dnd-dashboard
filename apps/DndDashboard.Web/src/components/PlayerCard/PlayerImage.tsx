@@ -28,7 +28,7 @@ const PlayerImage: React.FC<PlayerImageProps> = ({ playerId, image }) => {
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const compressed = canvas.toDataURL('image/jpeg', 0.7); // quality 70%
+          const compressed = canvas.toDataURL('image/jpeg', 0.9); // quality 90%
           updatePlayerField(playerId, 'image', compressed)
         }
       };
