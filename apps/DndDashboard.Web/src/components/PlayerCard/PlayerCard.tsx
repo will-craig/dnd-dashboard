@@ -1,12 +1,12 @@
 import React from "react";
+import type { Player } from '../../models/Player';
 import InventoryManager from './Inventory';
 import PlayerHeader from './PlayerHeader/PlayerHeader';
 import PlayerTitle from './PlayerHeader/PlayerTitle';
 import StatusManager from './StatusManager';
 import Currency from './Currency';
 import PlayerImage from './PlayerImage';
-import type { Player } from '../../models/Player';
-import SpellSlots from "../SpellSlots.tsx";
+import SpellSlots from "./SpellSlots.tsx";
 
 type PlayerCardProps = {
     player: Player

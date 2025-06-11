@@ -34,6 +34,6 @@ public class Player
     public List<Item> Items { get; set; } = new();
     
     [JsonPropertyName("spellSlots")]
-    public SpellSlots SpellSlots { get; set; } = new();
+    public List<SpellSlot> SpellSlots { get; set; } = new();
 }
 

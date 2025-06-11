@@ -1,5 +1,5 @@
 import type { Item } from './Item';
-import type {SpellSlots} from "./SpellSlots.ts";
+import type {SpellSlot} from "./SpellSlots.ts";
 
 export type Player = {
   id: string;
@@ -11,5 +11,5 @@ export type Player = {
   image?: string;
   status: string[];
   items: Item[];
-  spellSlots: SpellSlots;
+  spellSlots: SpellSlot[];
 };

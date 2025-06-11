@@ -1,7 +1,7 @@
+import type {Player} from "../models/Player.ts";
 import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerCard from './PlayerCard/PlayerCard';
-import type {Player} from "../models/Player.ts";
 import useSessionActions from "../state/session/useSessionActions.ts";
 import {connectToSessionHub, stopSessionHub} from "../services/signalHub.ts";
 import {pullSession} from "../clients/session.client.ts";
@@ -50,17 +50,7 @@ export default function Dashboard() {
             image: '',
             items: [],
             status: [],
-            spellSlots: {
-                Level1: [true,true,true],
-                Level2: [],
-                Level3: [],
-                Level4: [],
-                Level5: [],
-                Level6: [],
-                Level7: [],
-                Level8: [],
-                Level9: []
-            }
+            spellSlots: [{ level: 1, slots: [true] }], // Default to one level 1 spell slot
         };
         addPlayer(newPlayer);
     };
