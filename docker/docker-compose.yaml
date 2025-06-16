@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  api:
+    build:
+      context: .
+      dockerfile: ../apps/DndDashboard.Api/Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      - RabbitMQHost=rabbitmq
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "8080:8080"
+    networks:
+      - dnd-net
+
+  signal-hub:
+    build:
+      context: .
+      dockerfile: ../apps/DndDashboard.SignalHub/Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "8090:8080"
+    networks:
+      - dnd-net
+
+  web:
+    build:
+      context: ../apps/DndDashboard.Web
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+      - signal-hub
+    # pass your VITE_ vars at *runtime* so vite picks them up
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5173
+      - VITE_API_BASE_URL=http://api:8080
+      - VITE_SIGNAL_HUB_BASE_URL=http://signal-hub:8080
+    ports:
+      - "5173:5173"
+    networks:
+      - dnd-net
+
+networks:
+  dnd-net:
+    driver: bridge

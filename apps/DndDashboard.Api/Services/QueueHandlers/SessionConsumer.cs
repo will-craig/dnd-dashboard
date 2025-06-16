@@ -7,9 +7,9 @@ using RabbitMQ.Client.Events;
 
 namespace DndDashboard.Api.Services.QueueHandlers;
 
-public class SessionConsumer(ISessionStore sessionStore, string hostName = "localhost") : BackgroundService
+public class SessionConsumer(ISessionStore sessionStore, IConfiguration config) : BackgroundService
 {
-    private readonly ConnectionFactory _factory = new() { HostName = hostName };
+    private readonly ConnectionFactory _factory = new() { HostName = config["RabbitMQHost"] ?? "localhost" };
     private const string QueueName = "session_updates";
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
