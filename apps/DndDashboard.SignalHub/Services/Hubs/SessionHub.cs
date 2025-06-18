@@ -1,10 +1,10 @@
 using DndDashboard.Domain.Models;
+using DndDashboard.SignalHub.Services.QueuePublisher;
 using Microsoft.AspNetCore.SignalR;
-using DndDashboard.SignalHub.Services;
 
-namespace DndDashboard.SignalHub.Hubs;
+namespace DndDashboard.SignalHub.Services.Hubs;
 
-public class SessionHub(ISessionUpdatePublisher queue) : Hub
+public class SessionHub(IQueuePublisher queue) : Hub
 {
     public async Task JoinSession(string sessionId)
     {

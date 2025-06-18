@@ -2,7 +2,7 @@ namespace DndDashboard.Api.Configuration
 {
     public static class MiddlewareConfigurator
     {
-        public static void ConfigureMiddleware(this WebApplication app)
+        public static WebApplication ConfigureMiddleware(this WebApplication app)
         {
             app.UseCors("AllowWebApp");
             if (app.Environment.IsDevelopment())
@@ -12,6 +12,10 @@ namespace DndDashboard.Api.Configuration
                 Console.WriteLine("Swagger UI is enabled");
             }
             app.MapControllers();
+            app.MapHealthChecks("/health");
+            app.UseCors("AllowWebApp");
+            
+            return app;
         }
     }
 }

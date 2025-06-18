@@ -3,14 +3,9 @@ using System.Text.Json;
 using DndDashboard.Domain.Models;
 using RabbitMQ.Client;
 
-namespace DndDashboard.SignalHub.Services;
+namespace DndDashboard.SignalHub.Services.QueuePublisher;
 
-public interface ISessionUpdatePublisher
-{
-    public Task PublishSessionUpdate(Session session);
-}
-
-public class SessionUpdatePublisher(string hostName = "localhost"): ISessionUpdatePublisher
+public class RabbitMqSessionPublisher(string hostName = "localhost"): IQueuePublisher
 {
     private const string QueueName = "session_updates";
     private readonly ConnectionFactory _factory = new() { HostName = hostName };
