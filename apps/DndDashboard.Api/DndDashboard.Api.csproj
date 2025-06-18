@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DndDashboard.Domain\DndDashboard.Domain.csproj" />
-      <ProjectReference Include="..\DndDashboard.SignalHub\DndDashboard.SignalHub.csproj" />
     </ItemGroup>
 
 </Project>
