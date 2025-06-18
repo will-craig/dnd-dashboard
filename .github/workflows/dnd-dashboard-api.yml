@@ -60,7 +60,9 @@ jobs:
           app-name: 'dnd-dashboard-api'
           app-settings-json: |
             {
-              "Redis__Connection": "${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"
+              "name":"Redis__Connection"
+              "value":"${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"
+              "slotSetting": false
             }
             
       - name: Deploy to Azure Web App
