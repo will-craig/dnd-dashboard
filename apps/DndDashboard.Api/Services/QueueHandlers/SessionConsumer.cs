@@ -14,8 +14,7 @@ public sealed class SessionConsumer(ISessionStore store, IQueueConsumer queue) :
 {
     private const string QueueName = "session_updates";
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken) => 
-        queue.StartAsync(QueueName, async msg =>
+    protected override Task ExecuteAsync(CancellationToken stoppingToken) => queue.StartAsync(QueueName, async msg =>
         {
             try
             {
