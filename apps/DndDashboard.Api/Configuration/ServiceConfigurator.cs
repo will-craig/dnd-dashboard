@@ -33,7 +33,7 @@ public static class ServiceConfigurator
             builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
         else
         {
-            var redisConnectionString = builder.Configuration["RedisConnection"]
+            var redisConnectionString = builder.Configuration["Redis:Connection"]
                                         ?? throw new InvalidOperationException("Redis connection string not configured");
 
             var redis = ConnectionMultiplexer.Connect(redisConnectionString);

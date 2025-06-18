@@ -22,7 +22,9 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish ./apps/DndDashboard.Api/DndDashboard.Api.csproj --configuration Release --output ${{ github.workspace }}/publish
-    
+        env:
+          Redis__Connection: ${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING}}
+      
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -52,6 +54,15 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_01E72C9034BB4F6E9BD7B6CF484686DC }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_32E0D2FB7CFD46CBA5B033121EA58908 }}
 
+      - name: Set Redis connection string in App Settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'dnd-dashboard-api'
+          app-settings-json: |
+            {
+              "Redis__Connection": "${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"
+            }
+            
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
