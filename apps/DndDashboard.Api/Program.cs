@@ -6,5 +6,6 @@ builder.ConfigureServices();
 var app = builder.Build();
 app.ConfigureMiddleware();
 
+app.MapHealthChecks("/health");
 app.UseCors("AllowWebApp");
 app.Run();
