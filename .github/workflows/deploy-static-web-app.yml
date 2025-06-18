@@ -32,6 +32,7 @@ jobs:
           app_location: "/apps/DndDashboard.Web"
           api_location: "/apps/DndDashboard.Api"
           output_location: "dist"
+          deployment_environment: default
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
