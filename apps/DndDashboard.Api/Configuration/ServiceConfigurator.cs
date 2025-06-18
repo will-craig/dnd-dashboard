@@ -18,7 +18,7 @@ public static class ServiceConfigurator
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 else
-                    policy.WithOrigins("TODO: will add with prod value here")
+                    policy.WithOrigins(builder.Configuration["Client:Origin"] ?? throw new InvalidOperationException("Client origin not configured"))
                         .WithHeaders("Content-Type", "Authorization")
                         .WithMethods("GET", "POST", "PUT", "DELETE")
                         .AllowCredentials();
