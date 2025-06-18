@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHealthChecks();
 builder.Services.AddSignalR(options =>
 {
     options.EnableDetailedErrors = true;
@@ -31,6 +32,7 @@ builder.Services.AddSingleton<ISessionUpdatePublisher, SessionUpdatePublisher>()
 var app = builder.Build();
 
 app.UseRouting();
+app.MapHealthChecks("/health");
 app.UseCors("CorsPolicy"); 
 app.Use(async (context, next) =>
 {

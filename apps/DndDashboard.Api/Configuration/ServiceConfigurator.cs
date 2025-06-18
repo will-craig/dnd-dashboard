@@ -27,6 +27,7 @@ public static class ServiceConfigurator
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
+        builder.Services.AddHealthChecks();
 
         if (builder.Environment.IsDevelopment())
             builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
