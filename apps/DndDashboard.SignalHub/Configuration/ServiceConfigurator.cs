@@ -9,19 +9,17 @@ public static class ServiceConfigurator
 {
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
-        var allowedOrigins = new[] { "http://localhost:5173" }; 
-
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", policy =>
             {
                 if(builder.Environment.IsDevelopment())
-                    policy.WithOrigins(allowedOrigins)
+                    policy.WithOrigins("http://localhost:5173")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
                 else
-                    policy.WithOrigins("TODO: will add with prod value here")
+                    policy.WithOrigins(builder.Configuration["Client:Origin"] ?? throw new InvalidOperationException("Client origin not configured"))
                         .WithHeaders("Content-Type", "Authorization")
                         .WithMethods("GET", "POST")
                         .AllowCredentials();
