@@ -13,9 +13,6 @@ services:
       dockerfile: ../apps/DndDashboard.Api/Dockerfile
     depends_on:
       - rabbitmq
-    environment:
-      - RabbitMQHost=rabbitmq
-      - ASPNETCORE_URLS=http://+:8080
     ports:
       - "8080:8080"
     networks:

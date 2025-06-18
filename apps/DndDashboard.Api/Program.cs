@@ -1,11 +1,9 @@
 using DndDashboard.Api.Configuration;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.ConfigureServices();
+var app = WebApplication
+    .CreateBuilder(args)
+    .ConfigureServices()
+    .Build()
+    .ConfigureMiddleware();
 
-var app = builder.Build();
-app.ConfigureMiddleware();
-
-app.MapHealthChecks("/health");
-app.UseCors("AllowWebApp");
 app.Run();
