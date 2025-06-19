@@ -48,7 +48,6 @@ public static class ServiceConfigurator
             ConfigureMessagingQueueSystem(builder);
         }
         
-        builder.Services.AddHostedService<SessionConsumer>();
         return builder;
     }
 
@@ -68,6 +67,7 @@ public static class ServiceConfigurator
             var sbClient = new ServiceBusClient(sbConn);
             builder.Services.AddSingleton<IQueueConsumer>(new ServiceBusQueue(sbClient));
         }
+        builder.Services.AddHostedService<SessionConsumer>();
     }
 
     private static void ConfigureSessionStore(WebApplicationBuilder builder)
