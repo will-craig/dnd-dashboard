@@ -1,3 +1,5 @@
+using DndDashboard.Api.Services.Hubs;
+
 namespace DndDashboard.Api.Configuration
 {
     public static class MiddlewareConfigurator
@@ -14,7 +16,7 @@ namespace DndDashboard.Api.Configuration
             app.MapControllers();
             app.MapHealthChecks("/health");
             app.UseCors("AllowWebApp");
-            
+            app.MapHub<SessionHub>("/hub/sessionHub");
             return app;
         }
     }

@@ -29,7 +29,11 @@ jobs:
           app_location: "./apps/DndDashboard.Web" 
           api_location: "" 
           output_location: "dist"
-
+        env:
+          VITE_API_BASE_URL: ${{vars.DASHBOARD_API_URL}} 
+          VITE_SIGNAL_HUB_BASE_URL: ${{vars.DASHBOARD_SIGNALHUB_URL}}
+  
+  
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest

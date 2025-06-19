@@ -1,0 +1,2 @@
+DndDashboard.SignalHub service is now redundant, as moving to use the PAAS SignalR service in azure.
+Keeping the project in the repo + solution just for the sake of being able to run the DndDashboard locally or fully containerized.
