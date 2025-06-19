@@ -13,15 +13,14 @@ public static class ServiceConfigurator
         {
             options.AddPolicy("AllowWebApp", policy =>
             {
-                if(builder.Environment.IsDevelopment())
-                    policy.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                else
-                    policy.WithOrigins(builder.Configuration["Client:Origin"] ?? throw new InvalidOperationException("Client origin not configured"))
-                        .WithHeaders("Content-Type", "Authorization")
-                        .WithMethods("GET", "POST", "PUT", "DELETE")
-                        .AllowCredentials();
+                policy.WithOrigins(builder.Configuration["Client:Origin"] ?? throw new InvalidOperationException("Client origin not configured"))
+                    .WithHeaders(
+                        "Content-Type",
+                        "Authorization",
+                        "X-Requested-With",
+                        "X-SignalR-User-Agent")
+                    .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .AllowCredentials();
             });
         });
 
@@ -38,8 +37,9 @@ public static class ServiceConfigurator
         if (usingAzureSignalR)
         {
             Console.WriteLine("Using Azure SignalR Service");
-            builder.Services.AddSignalR().AddAzureSignalR(builder.Configuration["AzureSignalR:Connection"] 
-                                                          ?? throw new InvalidOperationException("Azure SignalR connection string not configured"));
+            var connectionString = builder.Configuration["AzureSignalR:Connection"]
+                                    ?? throw new InvalidOperationException("Azure SignalR connection string not configured");
+            builder.Services.AddSignalR().AddAzureSignalR(connectionString);
         }
         else
         {
