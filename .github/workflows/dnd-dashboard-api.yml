@@ -58,12 +58,12 @@ jobs:
         uses: azure/appservice-settings@v1
         with:
           app-name: 'dnd-dashboard-api'
-          app-settings-json: >-
+          app-settings-json: '[
             { "name": "Redis__Connection", "value": "${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"},
             { "name": "ServiceBus__Connection", "value": "${{ secrets.DND_DASHBOARD_QUEUE }}"},
             { "name": "AzureSignalR__Connection", "value": "${{ secrets.DND_DASHBOARD_HUB_CONNECTION }}"},
             { "name": "Client__Origin", "value": "${{ vars.CLIENT_ORIGIN }}}" 
-          ]
+          ]'
       
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
