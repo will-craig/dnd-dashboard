@@ -39,10 +39,10 @@ Things still todo:
 - Fine tune and tweak things: Limit SignalR/Redis/Service Access/ CORS Lockdown
 - App Service Firewalling: Use Azure Front Door or Application Gateway for WAF and threat detection.
 - Add some new features:
- - Add a read only mode, for the DM, so that other users joining session can't make changes
- - Add view/hide option to components within player card
- - Add 'custom' fields
- - Add a dice role feature (Maybe add a cool 3d dice on screen somehow)
+    - Add a read only mode, for the DM, so that other users joining session can't make changes
+    - Add view/hide option to components within player card
+    - Add 'custom' fields
+    - Add a dice role feature (Maybe add a cool 3d dice on screen somehow)
 clean up view for mobile mode (some component boxes bleed over atm)
 - Figure out a way to monitize (ads) so I can use higher than 'free' tier options in azure.
 
