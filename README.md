@@ -41,7 +41,7 @@ A lightweight, interactive web app for managing Dungeons & Dragons player states
 - App Service Firewalling: Use Azure Front Door or Application Gateway for WAF and threat detection.
 - clean up view for mobile mode (some component boxes bleed over atm)
 - Figure out a way to monitize (ads) so I can use higher than 'free' tier options in azure.
-
+- Redis is kind of expensive. And not good for persistence, look at offloading everything to a db (mongo?) and only loading into cache active sessions; adding clean up for sessions that havent been access in x amount of time, option to delete sessions ect...
 - Add some new features:
     - Add a read only mode, for the DM, so that other users joining session can't make changes
     - Add view/hide option to components within player card
