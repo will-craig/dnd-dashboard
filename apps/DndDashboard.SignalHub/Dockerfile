@@ -7,10 +7,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["DndDashboard.SignalHub/DndDashboard.SignalHub.csproj", "DndDashboard.SignalHub/"]
-RUN dotnet restore "DndDashboard.SignalHub/DndDashboard.SignalHub.csproj"
+COPY ["apps/DndDashboard.SignalHub/DndDashboard.SignalHub.csproj", "apps/DndDashboard.SignalHub/"]
+RUN dotnet restore "apps/DndDashboard.SignalHub/DndDashboard.SignalHub.csproj"
 COPY . .
-WORKDIR "/src/DndDashboard.SignalHub"
+WORKDIR "/src/apps/DndDashboard.SignalHub"
 RUN dotnet build "DndDashboard.SignalHub.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

@@ -1,5 +1,5 @@
 import type {Player} from "../models/Player.ts";
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerCard from './PlayerCard/PlayerCard';
 import useSessionActions from "../state/session/useSessionActions.ts";
@@ -10,6 +10,7 @@ import {useQuery} from "@tanstack/react-query";
 export default function Dashboard() {
     const { id } = useParams();
     const { session, sessionFromServerUpdate, addPlayer, sessionUpdate } = useSessionActions();
+    const hasConnected = useRef(false);
     
     const { data, isLoading, error } = useQuery({
         queryKey: ['session', id],
@@ -22,15 +23,20 @@ export default function Dashboard() {
             sessionFromServerUpdate(data);
         }
     }, [data]);
-    
+
     useEffect(() => {
-        if (id) {
-            connectToSessionHub(id, sessionFromServerUpdate)
-                .then(() => console.log('dashboard connectToSessionHub complete'))
-                .catch(() => console.log('dashboard connectToSessionHub failed'));
-        }
+        if (!id || hasConnected.current) return;
+
+        //stop duplicate connection attempts
+        hasConnected.current = true;
+
+        connectToSessionHub(id, sessionFromServerUpdate)
+            .then(() => console.log('dashboard connectToSessionHub complete'))
+            .catch((err) => console.error('dashboard connectToSessionHub failed', err));
+
         return () => {
             stopSessionHub();
+            hasConnected.current = false;   
         };
     }, [id]);
 

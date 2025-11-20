@@ -10,7 +10,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: ../apps/DndDashboard.Api/Dockerfile
+      dockerfile: apps/DndDashboard.Api/Dockerfile
     depends_on:
       - rabbitmq
     ports:
@@ -21,7 +21,7 @@ services:
   signal-hub:
     build:
       context: .
-      dockerfile: ../apps/DndDashboard.SignalHub/Dockerfile
+      dockerfile: apps/DndDashboard.SignalHub/Dockerfile
     depends_on:
       - rabbitmq
     environment:
@@ -33,12 +33,11 @@ services:
 
   web:
     build:
-      context: ../apps/DndDashboard.Web
+      context: apps/DndDashboard.Web
       dockerfile: Dockerfile
     depends_on:
       - api
       - signal-hub
-    # pass your VITE_ vars at *runtime* so vite picks them up
     environment:
       - HOST=0.0.0.0
       - PORT=5173

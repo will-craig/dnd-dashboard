@@ -16,7 +16,11 @@ namespace DndDashboard.Api.Configuration
             app.MapControllers();
             app.MapHealthChecks("/health");
             app.UseCors("AllowWebApp");
-            app.MapHub<SessionHub>("/hub/sessionHub");
+            if (app.Configuration.GetValue<bool>("UseSignalrPaas"))
+            {
+                Console.WriteLine("Using Azure SignalR Service");
+                app.MapHub<SessionHub>("/hub/sessionHub");
+            }
             return app;
         }
     }

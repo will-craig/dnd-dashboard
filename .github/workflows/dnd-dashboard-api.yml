@@ -58,16 +58,17 @@ jobs:
         uses: azure/appservice-settings@v1
         with:
           app-name: 'dnd-dashboard-api'
-          app-settings-json: '[
-            { "name": "Redis__Connection", "value": "${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"},
-            { "name": "ServiceBus__Connection", "value": "${{ secrets.DND_DASHBOARD_QUEUE }}"},
-            { "name": "AzureSignalR__Connection", "value": "${{ secrets.DND_DASHBOARD_HUB_CONNECTION }}"},
-            { "name": "Client__Origin", "value": "${{ vars.DND_DASHBOARD_CLIENT_ORIGIN }}"} 
-          ]'
-      
+          app-settings-json: |
+            [
+              { "name": "Redis__Connection", "value": "${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"},
+              { "name": "ServiceBus__Connection", "value": "${{ secrets.DND_DASHBOARD_QUEUE }}"},
+              { "name": "AzureSignalR__Connection", "value": "${{ secrets.DND_DASHBOARD_HUB_CONNECTION }}"},
+              { "name": "Client__Origin", "value": "${{ vars.DND_DASHBOARD_CLIENT_ORIGIN }}"}
+            ]
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'dnd-dashboard-api'
-          slot-name: 'Production'
+          app-name: dnd-dashboard-api
+          slot-name: Production
           package: ./publish

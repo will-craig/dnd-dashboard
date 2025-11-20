@@ -39,7 +39,7 @@ public static class ServiceConfigurator
         else
         {
             var sbConn = builder.Configuration["ServiceBus:Connection"]
-                         ?? throw new InvalidOperationException("SB connection string missing");
+                         ?? throw new InvalidOperationException("ServiceBus connection string missing");
             var sbClient = new ServiceBusClient(sbConn);
             builder.Services.AddSingleton<IQueuePublisher>(new ServiceBusSessionPublisher(sbClient));
         }
