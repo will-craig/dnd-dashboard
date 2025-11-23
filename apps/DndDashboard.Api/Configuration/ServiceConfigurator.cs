@@ -2,6 +2,7 @@ using Azure.Messaging.ServiceBus;
 using DndDashboard.Api.Services.QueueHandlers;
 using DndDashboard.Domain.Services;
 using StackExchange.Redis;
+using MongoDB.Driver;
 
 namespace DndDashboard.Api.Configuration;
 
@@ -56,7 +57,6 @@ public static class ServiceConfigurator
         if (builder.Environment.IsDevelopment())
         {
             //Configure Rabbitmq
-            builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
             builder.Services.AddSingleton<IQueueConsumer>(new RabbitSessionQueue(builder.Configuration["RabbitMq:Host"] ?? "localhost"));
         }
         else
@@ -72,21 +72,51 @@ public static class ServiceConfigurator
 
     private static void ConfigureSessionStore(WebApplicationBuilder builder)
     {
-        if (builder.Environment.IsDevelopment())
+        var defaultProvider = builder.Environment.IsDevelopment() ? "InMemory" : "Redis";
+        var provider = builder.Configuration["SessionStore:Provider"] ?? defaultProvider;
+
+        switch (provider.ToLowerInvariant())
         {
-            // Use in-memory store for development
-            Console.WriteLine("Using InMemory session store");
-            builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
+            case "inmemory":
+                Console.WriteLine("Using InMemory session store");
+                builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
+                break;
+            case "mongo":
+                ConfigureMongoSessionStore(builder);
+                break;
+            case "redis":
+                ConfigureRedisSessionStore(builder);
+                break;
+            default:
+                throw new InvalidOperationException($"Unknown session store provider: {provider}");
         }
-        else
-        {
-            //Configure Redis
-            Console.WriteLine("Using Redis session store");
-            var redisConnectionString = builder.Configuration["Redis:Connection"] 
-                                        ?? throw new InvalidOperationException("Redis connection string not configured");
-            var redis = ConnectionMultiplexer.Connect(redisConnectionString);
-            builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
-            builder.Services.AddSingleton<ISessionStore, RedisSessionStore>();
-        }
+    }
+
+    private static void ConfigureMongoSessionStore(WebApplicationBuilder builder)
+    {
+        Console.WriteLine("Using MongoDB session store");
+        var connectionString = builder.Configuration["Mongo:Connection"]
+                               ?? throw new InvalidOperationException("MongoDB connection string not configured");
+        var databaseName = builder.Configuration["Mongo:Database"]
+                           ?? throw new InvalidOperationException("MongoDB database name not configured");
+        var collectionName = builder.Configuration["Mongo:Collection"]
+                              ?? throw new InvalidOperationException("MongoDB collection name not configured");
+
+        var client = new MongoClient(connectionString);
+        var database = client.GetDatabase(databaseName);
+        var collection = database.GetCollection<DndDashboard.Domain.Models.Session>(collectionName);
+
+        builder.Services.AddSingleton(collection);
+        builder.Services.AddSingleton<ISessionStore, MongoSessionStore>();
+    }
+
+    private static void ConfigureRedisSessionStore(WebApplicationBuilder builder)
+    {
+        Console.WriteLine("Using Redis session store");
+        var redisConnectionString = builder.Configuration["Redis:Connection"]
+                                    ?? throw new InvalidOperationException("Redis connection string not configured");
+        var redis = ConnectionMultiplexer.Connect(redisConnectionString);
+        builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
+        builder.Services.AddSingleton<ISessionStore, RedisSessionStore>();
     }
 }

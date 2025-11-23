@@ -22,10 +22,7 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish ./apps/DndDashboard.Api/DndDashboard.Api.csproj --configuration Release --output ${{ github.workspace }}/publish
-        env:
-          Redis__Connection: ${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING}}
-      
-      
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -60,8 +57,8 @@ jobs:
           app-name: 'dnd-dashboard-api'
           app-settings-json: |
             [
-              { "name": "Redis__Connection", "value": "${{ secrets.DND_DASHBOARD_REDIS_CONNECTION_STRING }}"},
-              { "name": "ServiceBus__Connection", "value": "${{ secrets.DND_DASHBOARD_QUEUE }}"},
+              { "name": "SessionStore__Provider", "value": "mongo"},
+              { "name": "Mongo__Connection", "value": "${{ secrets.DND_DASHBOARD_MONGO_CONNECTION }}"},
               { "name": "AzureSignalR__Connection", "value": "${{ secrets.DND_DASHBOARD_HUB_CONNECTION }}"},
               { "name": "Client__Origin", "value": "${{ vars.DND_DASHBOARD_CLIENT_ORIGIN }}"}
             ]
