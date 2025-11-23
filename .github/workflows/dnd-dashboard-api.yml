@@ -18,7 +18,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0'      
+          dotnet-version: '9.x'      
 
       - name: dotnet publish
         run: dotnet publish ./apps/DndDashboard.Api/DndDashboard.Api.csproj --configuration Release --output ${{ github.workspace }}/publish
@@ -47,10 +47,10 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1E6B8DFE6B784F4B83D203958D941395 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_01E72C9034BB4F6E9BD7B6CF484686DC }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_32E0D2FB7CFD46CBA5B033121EA58908 }}
-
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B4356A936AE04936BDC9ACC19A3A80A8 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FCE1959A33744E0CABF038CD91708996 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D84F263E075640A3B1ED0B7C9877E5FD }}
+      
       - name: Set App Settings
         uses: azure/appservice-settings@v1
         with:
