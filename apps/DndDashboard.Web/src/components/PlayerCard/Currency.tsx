@@ -11,11 +11,13 @@ const Currency: React.FC<CurrencyProps> = ({playerId, gold }) => {
     
   return (
     <div className="mt-2">
-      <label className="mr-2">💰</label>
+      <label className="mr-2" htmlFor={`gold-${playerId}`}>💰</label>
       <input
+        id={`gold-${playerId}`}
         type="number"
         value={gold}
         onChange={(e) => updatePlayerField(playerId, 'gold', Number(e.target.value))}
+        aria-label="Gold"
         className="bg-zinc-700 p-1 rounded w-20 text-center"
       />
     </div>

@@ -57,6 +57,7 @@ const PlayerImage: React.FC<PlayerImageProps> = ({ playerId, image }) => {
           type="file"
           accept="image/*"
           onChange={handleImageChange}
+          aria-label="Upload portrait"
           className="absolute inset-0 opacity-0 cursor-pointer"
         />
       </label>

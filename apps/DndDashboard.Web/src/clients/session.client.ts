@@ -1,5 +1,5 @@
 import type {Session} from "../models/Session.ts";
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = __API_URL__;
 
 export async function pullSession(id: string): Promise<Session> {
     const response = await fetch(`${BASE_URL}/api/session/${id}`);

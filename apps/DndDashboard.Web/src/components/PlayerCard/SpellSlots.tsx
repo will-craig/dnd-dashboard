@@ -105,6 +105,7 @@ export default function SpellSlots({ playerId, slots }: SpellSlotsProps) {
                                 <button
                                     key={idx}
                                     onClick={() => toggleSlot(level, idx)}
+                                    aria-label={`Toggle spell slot ${level}-${idx}`}
                                     className="w-8 h-8"
                                 >
                                     <Lottie

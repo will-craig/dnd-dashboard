@@ -56,6 +56,7 @@ const StatusManager: React.FC<StatusManagerProps> = ({playerId, playerConditions
             <button
               key={condition}
               onClick={() => handleToggleCondition(condition)}
+              aria-label={`Toggle ${condition}`}
               className={`px-2 py-1 rounded-full text-left ${
                   playerConditions.includes(condition)
                   ? 'bg-red-600 text-white'
@@ -70,6 +71,7 @@ const StatusManager: React.FC<StatusManagerProps> = ({playerId, playerConditions
 
       <button
         onClick={() => setShowPicker(!showPicker)}
+        aria-label="Toggle condition picker"
         className="mt-2 text-xs text-blue-400 underline"
       >
         {showPicker ? 'Hide conditions' : 'Edit conditions'}

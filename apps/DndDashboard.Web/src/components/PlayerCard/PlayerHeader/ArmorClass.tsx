@@ -17,6 +17,7 @@ const ArmourClass: React.FC<ArmourClassProps> = ({ playerId, ac }) => {
           type="number"
           value={ac}
           onChange={(e) => updatePlayerField(playerId, 'ac', Number(e.target.value))}
+          aria-label="Armor class"
           className="bg-zinc-700 rounded px-2 w-14 text-center"
         />
       </div>

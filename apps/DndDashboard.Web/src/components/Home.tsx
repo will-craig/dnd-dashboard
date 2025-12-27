@@ -27,9 +27,11 @@ export default function Home() {
                 className="border rounded px-4 py-2"
                 value={partyName}
                 onChange={(e) => setPartyName(e.target.value)}
+                aria-label="Party name"
             />
             <button
                 onClick={handleCreateSession}
+                aria-label="Start session"
                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
                 Start New Session

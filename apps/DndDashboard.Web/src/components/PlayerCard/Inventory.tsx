@@ -93,11 +93,13 @@ const InventoryAddForm: React.FC<{onAddItem: (item: Item) => void;}> = ({ onAddI
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Add new..."
+        aria-label="Item name"
         className="bg-zinc-700 p-1 rounded w-32 text-xs"
       />
       <select
         value={type}
         onChange={(e) => setType(e.target.value as InventoryType)}
+        aria-label="Item type"
         className="bg-zinc-700 p-1 rounded text-xs"
       >
         <option value="item">Item</option>
@@ -112,11 +114,13 @@ const InventoryAddForm: React.FC<{onAddItem: (item: Item) => void;}> = ({ onAddI
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
           placeholder="Quantity"
+          aria-label="Item quantity"
           className="bg-zinc-700 p-1 rounded w-20 text-xs"
         />
       )}
       <button
         onClick={handleAdd}
+        aria-label="Add item"
         className="text-xs bg-green-600 px-2 py-1 rounded"
       >
         Add
@@ -154,12 +158,14 @@ const ItemList: React.FC<{
                   onChange={(e) =>
                     {onUpdate(idx, { ...item, quantity: Number(e.target.value) })}
                   }
+                  aria-label={`Quantity for ${item.name}`}
                   className="bg-zinc-700 rounded px-1 text-xs w-14"
                 />
               )}
             </span>
             <button
               onClick={() => onRemove(idx)}
+              aria-label={`Remove ${item.name}`}
               className="text-xs text-red-400 ml-2"
             >
               ✖
@@ -187,7 +193,7 @@ const AmmoList: React.FC<{
         return (
           <li
             key={idx}
-            className={`flex justify-between items-center`}
+            className="flex justify-between items-center"
           >
              <span className="flex items-center gap-2">
               {ammoItem.name}
@@ -198,12 +204,14 @@ const AmmoList: React.FC<{
                   onChange={(e) =>
                     onUpdate(idx, { ...ammoItem, quantity: Number(e.target.value) })
                   }
+                  aria-label={`Quantity for ${ammoItem.name}`}
                   className="bg-zinc-700 rounded px-1 text-xs w-14"
                 />
               )}
             </span>
             <button
               onClick={() => onRemove(idx)}
+              aria-label={`Remove ${ammoItem.name}`}
               className="text-xs text-red-400 ml-2"
             >
               ✖
@@ -231,6 +239,7 @@ const KeyList: React.FC<{
             <span>{item.name}</span>
             <button
               onClick={() => onRemove(idx)}
+              aria-label={`Remove ${item.name}`}
               className="text-xs text-red-400 ml-2"
             >
               ✖

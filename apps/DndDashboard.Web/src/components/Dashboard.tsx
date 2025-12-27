@@ -46,6 +46,7 @@ export default function Dashboard() {
     const [newPlayerHP, setNewPlayerHP] = useState(10);
 
     const handleAddPlayer = () => {
+        //Default new player object
         const newPlayer = {
             id: Date.now().toString(),
             name: newPlayerName,
@@ -56,9 +57,11 @@ export default function Dashboard() {
             image: '',
             items: [],
             status: [],
-            spellSlots: [{ level: 1, slots: [true] }], // Default to one level 1 spell slot
+            spellSlots: [{ level: 1, slots: [true] }], 
         };
         addPlayer(newPlayer);
+        setNewPlayerName('');
+        setNewPlayerHP(10);
     };
 
     if (isLoading) return <div className="p-6 text-white">Loading...</div>;
@@ -71,6 +74,7 @@ export default function Dashboard() {
                 type="text"
                 value={session.partyName}
                 onChange={(e) => sessionUpdate({ ...session, partyName: e.target.value })}
+                aria-label="Party name"
                 className="text-3xl font-bold mb-6 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
 
@@ -80,6 +84,7 @@ export default function Dashboard() {
                     placeholder="Player name"
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
+                    aria-label="New player name"
                     className="bg-zinc-800 p-2 rounded w-48 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 <input
@@ -87,17 +92,19 @@ export default function Dashboard() {
                     placeholder="HP"
                     value={newPlayerHP}
                     onChange={(e) => setNewPlayerHP(Number(e.target.value))}
+                    aria-label="New player HP"
                     className="bg-zinc-800 p-2 rounded w-24 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 <button
                     onClick={handleAddPlayer}
+                    aria-label="Add player"
                     className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded"
                 >
                     Add Player
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl2:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                 {players.map((player: Player) => (
                     <PlayerCard
                         key={player.id}

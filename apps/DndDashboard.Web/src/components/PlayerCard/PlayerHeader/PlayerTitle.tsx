@@ -11,11 +11,12 @@ const PlayerTitle: React.FC<PlayerTitle> = ({playerId, playerName, isDead}) => {
   const {updatePlayerField} = useSessionActions();
   return (
        <div className="flex items-center gap-2">
-        {isDead && <span>💀</span>}
+        {isDead && <span className="text-xs uppercase text-red-400">💀</span>}
         <input
             type="text"
             value={playerName}
             onChange={(e) => updatePlayerField(playerId, 'name', (e.target.value))}
+            aria-label="Player name"
             className="text-xl font-semibold p-1 rounded w-full"
         />
         </div>

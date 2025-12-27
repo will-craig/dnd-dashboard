@@ -16,6 +16,7 @@ const PlayerHealth: React.FC<PlayerHealthProps> = ({hp, maxHp, onChangeHp, onCha
           value={hp}
           min={0}
           onChange={(e) => onChangeHp(Number(e.target.value))}
+          aria-label="HP"
           className="bg-zinc-700 p-1 rounded w-20 text-center" />
       <span className="text-sm text-zinc-400">/</span>
       <input
@@ -23,6 +24,7 @@ const PlayerHealth: React.FC<PlayerHealthProps> = ({hp, maxHp, onChangeHp, onCha
           value={maxHp}
           min={1}
           onChange={(e) => onChangeMaxHp(Number(e.target.value))}
+          aria-label="Max HP"
           className="bg-zinc-700 p-1 rounded w-20 text-center" />    
     </div>
     
