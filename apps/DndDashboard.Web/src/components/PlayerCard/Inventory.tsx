@@ -87,20 +87,20 @@ const InventoryAddForm: React.FC<{onAddItem: (item: Item) => void;}> = ({ onAddI
   };
 
   return (
-    <div className="flex gap-2 items-center mb-2">
+    <div className="flex flex-wrap gap-2 items-center mb-2 min-w-0">
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Add new..."
         aria-label="Item name"
-        className="bg-zinc-700 p-1 rounded w-32 text-xs"
+        className="bg-zinc-700 p-1 rounded w-full min-w-0 text-xs sm:w-32"
       />
       <select
         value={type}
         onChange={(e) => setType(e.target.value as InventoryType)}
         aria-label="Item type"
-        className="bg-zinc-700 p-1 rounded text-xs"
+        className="bg-zinc-700 p-1 rounded text-xs w-full min-w-0 sm:w-auto"
       >
         <option value="item">Item</option>
         <option value="item-qty">Item (with quantity)</option>
@@ -115,7 +115,7 @@ const InventoryAddForm: React.FC<{onAddItem: (item: Item) => void;}> = ({ onAddI
           onChange={(e) => setQuantity(Number(e.target.value))}
           placeholder="Quantity"
           aria-label="Item quantity"
-          className="bg-zinc-700 p-1 rounded w-20 text-xs"
+          className="bg-zinc-700 p-1 rounded w-20 text-xs min-w-0"
         />
       )}
       <button
@@ -145,12 +145,12 @@ const ItemList: React.FC<{
         return (
           <li
             key={idx}
-            className={`flex justify-between items-center ${
+            className={`flex flex-wrap gap-2 justify-between items-center min-w-0 ${
               item.magic ? 'text-indigo-400 font-semibold' : ''
             }`}
           >
-            <span className="flex items-center gap-2">
-              {item.name}
+            <span className="flex min-w-0 flex-wrap items-center gap-2">
+              <span className="break-words">{item.name}</span>
               {(item.quantity && item.quantity > 0) && (
                 <input
                   type="number"
@@ -159,7 +159,7 @@ const ItemList: React.FC<{
                     {onUpdate(idx, { ...item, quantity: Number(e.target.value) })}
                   }
                   aria-label={`Quantity for ${item.name}`}
-                  className="bg-zinc-700 rounded px-1 text-xs w-14"
+                  className="bg-zinc-700 rounded px-1 text-xs w-14 min-w-0"
                 />
               )}
             </span>
@@ -193,10 +193,10 @@ const AmmoList: React.FC<{
         return (
           <li
             key={idx}
-            className="flex justify-between items-center"
+            className="flex flex-wrap gap-2 justify-between items-center min-w-0"
           >
-             <span className="flex items-center gap-2">
-              {ammoItem.name}
+             <span className="flex min-w-0 flex-wrap items-center gap-2">
+              <span className="break-words">{ammoItem.name}</span>
               {typeof ammoItem.quantity === 'number' && (
                 <input
                   type="number"
@@ -205,7 +205,7 @@ const AmmoList: React.FC<{
                     onUpdate(idx, { ...ammoItem, quantity: Number(e.target.value) })
                   }
                   aria-label={`Quantity for ${ammoItem.name}`}
-                  className="bg-zinc-700 rounded px-1 text-xs w-14"
+                  className="bg-zinc-700 rounded px-1 text-xs w-14 min-w-0"
                 />
               )}
             </span>
@@ -235,8 +235,8 @@ const KeyList: React.FC<{
       {items.map((item) => {
         const idx = allItems.indexOf(item);
         return (
-          <li key={idx} className="flex justify-between items-center">
-            <span>{item.name}</span>
+          <li key={idx} className="flex flex-wrap gap-2 justify-between items-center min-w-0">
+            <span className="break-words">{item.name}</span>
             <button
               onClick={() => onRemove(idx)}
               aria-label={`Remove ${item.name}`}

@@ -11,14 +11,14 @@ const ArmourClass: React.FC<ArmourClassProps> = ({ playerId, ac }) => {
   const {updatePlayerField} = useSessionActions();
   
   return (
-      <div className="flex items-center gap-1 text-sm ml-4">
+      <div className="flex flex-wrap items-center gap-1 text-sm ml-0 sm:ml-4 min-w-0">
         <span className="text-zinc-400">🛡 AC:</span>
         <input
           type="number"
           value={ac}
           onChange={(e) => updatePlayerField(playerId, 'ac', Number(e.target.value))}
           aria-label="Armor class"
-          className="bg-zinc-700 rounded px-2 w-14 text-center"
+          className="bg-zinc-700 rounded px-2 w-14 text-center min-w-0"
         />
       </div>
   );

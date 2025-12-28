@@ -73,8 +73,8 @@ export default function SpellSlots({ playerId, slots }: SpellSlotsProps) {
             {visibleLevels.map(level => {
                 const kvp = slots.find(s => s.level === level)!;
                 return (
-                    <div key={level} className="flex flex-col">
-                        <div className="flex items-center gap-1">
+                    <div key={level} className="flex flex-col min-w-0">
+                        <div className="flex flex-wrap items-center gap-1 min-w-0">
                             <span className="w-12 font-semibold">Lv {level}</span>
                             <button
                                 onClick={() => removeSlot(level)}
@@ -100,7 +100,7 @@ export default function SpellSlots({ playerId, slots }: SpellSlotsProps) {
                                 </button>
                             )}
                         </div>
-                        <div className="flex gap-1 pl-8 py-2">
+                        <div className="flex flex-wrap gap-1 pl-8 py-2 min-w-0">
                             {kvp.slots.map((used, idx) => (
                                 <button
                                     key={idx}

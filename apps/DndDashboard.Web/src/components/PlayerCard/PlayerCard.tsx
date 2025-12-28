@@ -21,7 +21,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({player}) => {
     return (
         <div
             key={player.id}
-            className={`bg-zinc-800 p-4 rounded-2xl shadow-lg flex flex-col gap-2 ${
+            className={`bg-zinc-800 p-4 rounded-2xl shadow-lg flex flex-col gap-2 min-w-0 overflow-hidden ${
             isLow ? 'animate-pulse border-red-500 border' : ''
             } ${isDead ? 'opacity-50' : ''}`}
         >

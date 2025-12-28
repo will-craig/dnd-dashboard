@@ -14,8 +14,8 @@ type PlayerHeaderProps = {
 const PlayerHeader: React.FC<PlayerHeaderProps> = ({playerId, hp, maxHp, ac}) => {
   const {updatePlayerField} = useSessionActions();
   return (     
-    <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-start">
+    <div className="flex flex-col gap-2 min-w-0">
+        <div className="flex flex-wrap gap-2 justify-between items-start min-w-0">
             
             <PlayerHealth 
                 hp={hp} 

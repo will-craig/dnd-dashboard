@@ -40,8 +40,8 @@ const PlayerImage: React.FC<PlayerImageProps> = ({ playerId, image }) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <label className="w-40 h-40 rounded-full overflow-hidden border-2 border-zinc-600 cursor-pointer relative group">
+    <div className="flex flex-col items-center gap-2 min-w-0">
+      <label className="w-32 h-32 sm:w-40 sm:h-40 max-w-full rounded-full overflow-hidden border-2 border-zinc-600 cursor-pointer relative group">
         {image ? (
           <img
             src={image}

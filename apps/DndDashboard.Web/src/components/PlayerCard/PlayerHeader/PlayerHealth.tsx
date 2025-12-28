@@ -9,7 +9,7 @@ type PlayerHealthProps = {
 
 const PlayerHealth: React.FC<PlayerHealthProps> = ({hp, maxHp, onChangeHp, onChangeMaxHp}) => {
   return (
-    <div className={`flex gap-2 items-center`}>
+    <div className="flex flex-wrap gap-2 items-center min-w-0">
       <label className="text-sm text-zinc-300">HP:</label>
       <input
           type="number"
@@ -17,7 +17,7 @@ const PlayerHealth: React.FC<PlayerHealthProps> = ({hp, maxHp, onChangeHp, onCha
           min={0}
           onChange={(e) => onChangeHp(Number(e.target.value))}
           aria-label="HP"
-          className="bg-zinc-700 p-1 rounded w-20 text-center" />
+          className="bg-zinc-700 p-1 rounded w-20 text-center min-w-0" />
       <span className="text-sm text-zinc-400">/</span>
       <input
           type="number"
@@ -25,7 +25,7 @@ const PlayerHealth: React.FC<PlayerHealthProps> = ({hp, maxHp, onChangeHp, onCha
           min={1}
           onChange={(e) => onChangeMaxHp(Number(e.target.value))}
           aria-label="Max HP"
-          className="bg-zinc-700 p-1 rounded w-20 text-center" />    
+          className="bg-zinc-700 p-1 rounded w-20 text-center min-w-0" />    
     </div>
     
   );
